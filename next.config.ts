@@ -3,7 +3,11 @@ import withPWA from "next-pwa";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  allowedDevOrigins: ["*"],
+  allowedDevOrigins: [
+    "3c54bc2e-420b-46d3-9f60-e88c3b6975d0-00-3j2q3eeemavx5.sisko.replit.dev",
+    ".replit.dev",
+    ".repl.co",
+  ],
   images: {
     remotePatterns: [
       {
