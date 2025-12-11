@@ -21,15 +21,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Funoon Fiesta - Showcasing Islamic Art & Culture",
+  title: "CulturaMeet - Cultural Festival Platform",
   description:
-    "A premier platform for students to showcase their talents and highlight the rich art forms of Islamic culture. Live scoreboard, admin controls, and jury tools for Funoon Fiesta.",
-  metadataBase: new URL("https://funoonfiesta.local"),
+    "A modern platform for cultural festivals featuring live scoreboards, team management, and real-time results. Showcase talent, celebrate culture, and connect communities.",
+  metadataBase: new URL("https://culturameet.local"),
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Funoon Fiesta",
+    title: "CulturaMeet",
   },
   icons: {
     icon: [
@@ -48,7 +48,7 @@ export const viewport: Viewport = {
   maximumScale: 5,
   userScalable: true,
   viewportFit: "cover",
-  themeColor: "#3b0764",
+  themeColor: "#6366f1",
 };
 
 export const dynamic = "force-dynamic";
@@ -63,12 +63,12 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#3b0764" />
+        <meta name="theme-color" content="#6366f1" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="Funoon Fiesta" />
+        <meta name="apple-mobile-web-app-title" content="CulturaMeet" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-TileColor" content="#3b0764" />
+        <meta name="msapplication-TileColor" content="#6366f1" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
       </head>
       <body

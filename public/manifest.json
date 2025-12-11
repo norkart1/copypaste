@@ -1,11 +1,11 @@
 {
-  "name": "Funoon Fiesta",
-  "short_name": "Funoon Fiesta",
-  "description": "A premier platform for students to showcase their talents and highlight the rich art forms of Islamic culture. Live scoreboard, admin controls, and jury tools.",
+  "name": "CulturaMeet",
+  "short_name": "CulturaMeet",
+  "description": "A modern platform for cultural festivals featuring live scoreboards, team management, and real-time results. Showcase talent, celebrate culture, and connect communities.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#020617",
-  "theme_color": "#3b0764",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
@@ -100,4 +100,3 @@
     }
   }
 }
-
