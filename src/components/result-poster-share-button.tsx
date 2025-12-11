@@ -86,7 +86,7 @@ export function ResultPosterShareButton({
       const imgData = await generateResultPoster(posterData, style);
 
       // Create caption
-      const caption = `Funoon Fiesta 2k25-26\n\n${program.name} result\n\nVisit our website funoonfiesta.noorululama.org`;
+      const caption = `CulturaMeet\n\n${program.name} result\n\nVisit our platform to see more results`;
 
       // Convert data URL to blob
       const blob = dataURLToBlob(imgData);
@@ -102,7 +102,7 @@ export function ResultPosterShareButton({
       if (webShareSupported && navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
-            title: `${program.name} Result - Funoon Fiesta 2k25-26`,
+            title: `${program.name} Result - CulturaMeet`,
             text: caption,
             files: [file],
           });
@@ -131,9 +131,9 @@ export function ResultPosterShareButton({
 
             // Share text with link
             await navigator.share({
-              title: `${program.name} Result - Funoon Fiesta 2k25-26`,
+              title: `${program.name} Result - CulturaMeet`,
               text: caption,
-              url: "https://funoonfiesta.noorululama.org",
+              url: window.location.origin,
             });
             return;
           } catch (error) {
@@ -174,9 +174,9 @@ export function ResultPosterShareButton({
         if (webShareSupported) {
           try {
             await navigator.share({
-              title: `${program.name} Result - Funoon Fiesta 2k25-26`,
+              title: `${program.name} Result - CulturaMeet`,
               text: caption,
-              url: "https://funoonfiesta.noorululama.org",
+              url: window.location.origin,
             });
           } catch (error) {
             // Show instructions if share fails

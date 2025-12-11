@@ -1,18 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { Menu, X } from "lucide-react";
-import { formatNumber } from "@/lib/utils";
 import { LiveScorePulse } from "@/components/live-score-pulse";
 import { TeamLeadersShowcase } from "@/components/team-leaders-showcase";
 import { useScoreboardUpdates } from "@/hooks/use-realtime";
 import { useRouter } from "next/navigation";
 import type { Team } from "@/lib/types";
+import { Trophy, Users, BarChart3, Zap, ArrowRight, Sparkles } from "lucide-react";
 
 interface HomeRealtimeProps {
   teams: Team[];
@@ -26,215 +24,157 @@ export function HomeRealtime({ teams: initialTeams, liveScores: initialLiveScore
     router.refresh();
   });
 
-  const highlight = initialTeams[0];
-
   return (
-    <main className="space-y-16">
+    <main className="space-y-0">
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-screen bg-[#fffcf5] p-4 sm:p-6 md:p-12 lg:p-16 flex flex-col">
-        {/* Decorative waves at bottom - full width */}
-        <div className="absolute bottom-0 left-0 right-0 w-full h-12 md:h-16 lg:h-22 z-0">
-          <Image
-            src="/img/hero/waves.webp"
-            alt="Decorative waves"
-            fill
-            className="object-cover object-bottom"
-            priority
-            style={{ width: '100%' }}
-          />
+      <section className="relative overflow-hidden min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex flex-col">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-indigo-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-3xl"></div>
         </div>
         
-        <div className="container mx-auto max-w-7xl relative z-10 flex-1 flex flex-col lg:justify-center">
-          {/* Mobile Layout: Vertical Stack */}
-          <div className="flex flex-col lg:hidden space-y-4 sm:space-y-5 w-full pt-2">
-            {/* Top Bar - Logo and Menu (Mobile) */}
-            <div className="flex items-center justify-between mb-2">
-              <div className="relative w-16 h-16 shrink-0">
-                <Image
-                  src="/festival-logo.png"
-                  alt="Funoon Fiesta Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
 
-            {/* Illustration - Full Width (Mobile) */}
-            <div className="relative w-full h-[250px] sm:h-[320px] md:h-[380px] mx-auto -mt-2">
+        <div className="container mx-auto max-w-7xl relative z-10 flex-1 flex flex-col justify-center px-4 sm:px-6 md:px-8 py-16 md:py-20">
+          <div className="flex flex-col items-center text-center space-y-8">
+            {/* Logo */}
+            <div className="relative w-24 h-24 md:w-32 md:h-32 mb-4">
               <Image
-                src="/festival-logo.png"
-                alt="Cultural Heritage Illustration"
+                src="/icon-512x512.png"
+                alt="CulturaMeet Logo"
                 fill
-                className="object-contain"
+                className="object-contain drop-shadow-2xl"
                 priority
               />
             </div>
 
-            {/* Malayalam Text - Centered (Mobile) - Bigger */}
-            <div className="flex justify-center px-4 -mt-2">
-              <div className="relative w-full max-w-lg sm:max-w-xl h-24 sm:h-32 md:h-40">
-                <Image
-                  src="/img/hero/Typegraphy.webp"
-                  alt="ശതകം സാക്ഷി"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
+            {/* Badge */}
+            <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-400/30 px-4 py-1.5 text-sm font-medium backdrop-blur-sm">
+              <Sparkles className="w-3.5 h-3.5 mr-1.5 inline" />
+              Cultural Festival Platform
+            </Badge>
+
+            {/* Main Title */}
+            <div className="space-y-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+                Cultura<span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Meet</span>
+              </h1>
+              <p className="text-lg sm:text-xl md:text-2xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                The modern platform for cultural festivals. Live scores, real-time results, and seamless team management.
+              </p>
             </div>
 
-            {/* Description - Centered (Mobile) */}
-            <div className="text-center space-y-4 px-4">
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed max-w-lg mx-auto">
-                For a hundred years, the Malabar coast has carried the rhythm of a community shaped by knowledge, faith, and artistic expression.
-              </p>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <Link href="/results">
+                <Button size="lg" className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold px-8 py-6 text-lg rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30 transition-all group">
+                  View Results
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link href="/scoreboard">
+                <Button size="lg" variant="outline" className="border-slate-600 text-slate-200 hover:bg-slate-800 hover:text-white px-8 py-6 text-lg rounded-xl">
+                  <BarChart3 className="w-5 h-5 mr-2" />
+                  Live Scoreboard
+                </Button>
+              </Link>
+            </div>
 
-              {/* CTA Button - Centered (Mobile) - Smaller */}
-              <div className="pt-1">
-                <Link href="/results">
-                  <Button className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-medium px-6 py-3 text-sm sm:text-base rounded-lg shadow-md hover:shadow-lg transition-all w-auto">
-                    Click to Dive in
-                  </Button>
-                </Link>
-              </div>
+            {/* Stats Preview */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mt-12 w-full max-w-3xl">
+              {[
+                { label: "Teams", value: initialTeams.length.toString(), icon: Users },
+                { label: "Live Updates", value: "Real-time", icon: Zap },
+                { label: "Categories", value: "Multiple", icon: Trophy },
+                { label: "Platform", value: "Modern", icon: Sparkles },
+              ].map((stat, index) => (
+                <div key={index} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 p-4 text-center">
+                  <stat.icon className="w-5 h-5 text-indigo-400 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-white">{stat.value}</p>
+                  <p className="text-sm text-slate-400">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </div>
+        </div>
 
-          {/* Desktop Layout: Side by Side */}
-          <div className="hidden lg:grid lg:grid-cols-2 gap-8 xl:gap-12 items-center w-full">
-            {/* Left Side - Illustration */}
-            <div className="relative w-full h-[500px] xl:h-[600px]">
-              <Image
-                src="/festival-logo.png"
-                alt="Cultural Heritage Illustration"
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-
-            {/* Right Side - Content */}
-            <div className="space-y-6 xl:space-y-8">
-              {/* Logo and Malayalam Script */}
-              <div className="flex items-center gap-4 xl:gap-6">
-                {/* Logo with text below */}
-                <div className="shrink-0 flex flex-col items-center">
-                  <div className="relative w-24 h-24 xl:w-36 xl:h-36 mb-1">
-                    <Image
-                      src="/festival-logo.png"
-                      alt="Funoon Fiesta Logo"
-                      fill
-                      className="object-contain"
-                      priority
-                    />
-                  </div>
-                </div>
-                {/* Malayalam Text */}
-                <div className="flex-1 pt-1">
-                  <div className="relative w-full h-14 xl:h-28">
-                    <Image
-                      src="/img/hero/Typegraphy.webp"
-                      alt="ശതകം സാക്ഷി"
-                      fill
-                      className="object-contain object-left"
-                      priority
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Main Title */}
-              <div>
-                <h1 className="text-4xl xl:text-5xl 2xl:text-7xl font-serif text-[#8B4513] leading-15 mb-2 ">
-                  Funoon Fiesta
-                </h1>
-                <p className="text-xl xl:text-2xl text-[#8B4513] font-light tracking-widest">
-                  2025 - 26
-                </p>
-              </div>
-
-              {/* Description */}
-              <p className="text-xm xl:text-md text-gray-700 leading-relaxed max-w-3xl">
-                For a hundred years, the Malabar coast has carried the rhythm of a community shaped by knowledge, faith, and artistic expression. Funoon Fiesta 2025-26 is the creative bridge that connects this century-long legacy to a new generation. Rooted in the centenary of Samastha Kerala Jamiyyathul Ulama, this edition proudly carries the theme "Shathakam Saakshi" – a tribute to the scholars, institutions, and countless individuals who illuminated our path.
-              </p>
-
-              {/* CTA Button */}
-              <div>
-                <Link href="/results">
-                  <Button className="bg-[#FACC15] hover:bg-[#EAB308] text-black font-semibold px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all">
-                    Click to Dive in
-                  </Button>
-                </Link>
-              </div>
-            </div>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 rounded-full border-2 border-slate-500 flex justify-center pt-2">
+            <div className="w-1.5 h-3 bg-slate-400 rounded-full animate-pulse"></div>
           </div>
         </div>
       </section>
 
       {/* Live Score Pulse Section */}
-      <section className="bg-[#fffcf5] py-12 sm:py-16 md:py-20">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
+      <section className="bg-slate-50 py-16 sm:py-20 md:py-24">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
           <LiveScorePulse teams={initialTeams} liveScores={initialLiveScores} />
         </div>
       </section>
 
       {/* Team Leaders Section */}
-      <section className="bg-white py-12 sm:py-16 md:py-20">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
+      <section className="bg-white py-16 sm:py-20 md:py-24">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
           <TeamLeadersShowcase teams={initialTeams} />
         </div>
       </section>
 
-      {/* About Funoon Fiesta Section */}
-      <section className="bg-[#fffcf5] py-12 sm:py-16 md:py-20">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
-          <div className="space-y-6 sm:space-y-8">
-            <div className="text-center max-w-3xl mx-auto px-4">
-              <Badge className="bg-amber-100 text-amber-800 border-amber-200 mb-3 sm:mb-4 text-xs sm:text-sm">About Funoon Fiesta</Badge>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif text-[#8B4513] mb-3 sm:mb-4">
-                Celebrating Islamic Art & Culture
+      {/* Features Section */}
+      <section className="bg-gradient-to-b from-slate-50 to-white py-16 sm:py-20 md:py-24">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+          <div className="space-y-12">
+            <div className="text-center max-w-3xl mx-auto">
+              <Badge className="bg-indigo-100 text-indigo-700 border-indigo-200 mb-4 text-sm">Platform Features</Badge>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                Everything You Need
               </h2>
-              <p className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed">
-                Funoon Fiesta is a premier platform for students to showcase their talents and highlight 
-                the rich art forms of Islamic culture. Through music, calligraphy, poetry, traditional 
-                dance, visual arts, and more, we present these beautiful expressions to a wider audience, 
-                fostering creativity, cultural appreciation, and artistic excellence.
+              <p className="text-slate-600 text-lg md:text-xl leading-relaxed">
+                CulturaMeet provides all the tools for running successful cultural festivals with transparency and real-time engagement.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-8 sm:mt-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { 
-                  title: "Cultural Heritage", 
-                  copy: "We celebrate the diverse and rich art forms rooted in Islamic culture, from traditional calligraphy to contemporary expressions, preserving and promoting cultural appreciation.", 
-                  tag: "Cultural showcase",
-                  icon: "🎨"
+                  title: "Live Scoring", 
+                  copy: "Real-time score updates as results are approved. Teams and participants stay connected to every moment.", 
+                  tag: "Real-time",
+                  icon: Zap,
+                  color: "indigo"
                 },
                 { 
-                  title: "Student Excellence", 
-                  copy: "A premier platform designed for students to showcase their talents, creativity, and artistic expression in a supportive and competitive environment.", 
-                  tag: "Talent platform",
-                  icon: "⭐"
+                  title: "Team Management", 
+                  copy: "Complete team portal for registration, participant management, and performance tracking throughout the event.", 
+                  tag: "Teams",
+                  icon: Users,
+                  color: "purple"
                 },
                 { 
-                  title: "Transparent Judging", 
-                  copy: "All scoring rules are codified in the platform. Every entry is auto-scored before human review, ensuring fairness and transparency in every evaluation.", 
-                  tag: "Fair evaluation",
-                  icon: "⚖️"
+                  title: "Fair Judging", 
+                  copy: "Transparent scoring system with admin approvals. Every result is verified before being published.", 
+                  tag: "Transparent",
+                  icon: Trophy,
+                  color: "amber"
                 },
                 { 
-                  title: "Live Updates", 
-                  copy: "Once admins approve submissions, both team and student scores refresh in seconds, keeping everyone connected to the action in real-time.", 
-                  tag: "Realtime sync",
-                  icon: "⚡"
+                  title: "Instant Results", 
+                  copy: "View results by program category with detailed breakdowns. Download and share result posters instantly.", 
+                  tag: "Results",
+                  icon: BarChart3,
+                  color: "emerald"
                 },
               ].map((item) => (
-                <Card key={item.title} className="bg-white border-gray-200 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 p-4 sm:p-6">
-                  <div className="text-3xl sm:text-4xl mb-2 sm:mb-3">{item.icon}</div>
-                  <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 mb-2 sm:mb-3 text-xs">{item.tag}</Badge>
-                  <CardTitle className="text-lg sm:text-xl text-gray-900 mb-2 sm:mb-3">{item.title}</CardTitle>
-                  <CardDescription className="text-sm sm:text-base text-gray-600 leading-relaxed">{item.copy}</CardDescription>
+                <Card key={item.title} className="bg-white border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 p-6 group">
+                  <div className={`w-12 h-12 rounded-xl bg-${item.color}-100 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <item.icon className={`w-6 h-6 text-${item.color}-600`} />
+                  </div>
+                  <Badge className={`bg-${item.color}-50 text-${item.color}-700 border-${item.color}-200 mb-3 text-xs`}>{item.tag}</Badge>
+                  <CardTitle className="text-xl text-slate-900 mb-3">{item.title}</CardTitle>
+                  <CardDescription className="text-slate-600 leading-relaxed">{item.copy}</CardDescription>
                 </Card>
               ))}
             </div>
@@ -242,34 +182,34 @@ export function HomeRealtime({ teams: initialTeams, liveScores: initialLiveScore
         </div>
       </section>
 
-      {/* Control Room Section */}
-      <section className="bg-gradient-to-br from-[#8B4513]/5 to-[#0d7377]/5 py-12 sm:py-16 md:py-20">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
-          <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 shadow-lg p-6 sm:p-8 md:p-12 mb-10">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 sm:gap-8">
+      {/* Portal Access Section */}
+      <section className="bg-slate-900 py-16 sm:py-20 md:py-24">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+          <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl border border-slate-700 p-8 md:p-12">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
               <div className="flex-1">
-                <Badge className="bg-cyan-100 text-cyan-800 border-cyan-200 mb-3 sm:mb-4 text-xs sm:text-sm">Need help?</Badge>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-[#8B4513] mb-3 sm:mb-4">
-                  Funoon Fiesta Control Room
+                <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-400/30 mb-4">Access Portals</Badge>
+                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+                  CulturaMeet Control Center
                 </h2>
-                <p className="text-gray-700 text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Contact us for support, inquiries, or assistance with the platform. 
-                  Our team is here to help ensure a smooth and enjoyable experience.
-                  <Link href="/admin/login" className="">
-                  <Button variant="secondary" className="text-sm text-black font-normal">
-                    Admin Login
-                  </Button>
-                </Link>
+                <p className="text-slate-300 text-lg leading-relaxed max-w-2xl">
+                  Access dedicated portals for admins, jury members, and team coordinators. 
+                  Each role has tailored tools for managing the festival experience.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
-                <Link href="/jury/login" className="w-full sm:w-auto">
-                  <Button variant="ghost" className="text-gray-700 hover:bg-gray-100 border border-gray-300 w-full sm:w-auto text-sm sm:text-base">
-                    Jury Login
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/admin/login">
+                  <Button variant="outline" className="border-slate-600 text-slate-200 hover:bg-slate-700 hover:text-white w-full sm:w-auto">
+                    Admin Portal
                   </Button>
                 </Link>
-                <Link href="/team/login" className="w-full sm:w-auto">
-                  <Button className="bg-[#8B4513] hover:bg-[#6B3410] text-white w-full sm:w-auto text-sm sm:text-base">
+                <Link href="/jury/login">
+                  <Button variant="outline" className="border-slate-600 text-slate-200 hover:bg-slate-700 hover:text-white w-full sm:w-auto">
+                    Jury Portal
+                  </Button>
+                </Link>
+                <Link href="/team/login">
+                  <Button className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white w-full sm:w-auto">
                     Team Portal
                   </Button>
                 </Link>
@@ -278,14 +218,35 @@ export function HomeRealtime({ teams: initialTeams, liveScores: initialLiveScore
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-950 py-8 border-t border-slate-800">
+        <div className="container mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/icon-192x192.png"
+                alt="CulturaMeet"
+                width={32}
+                height={32}
+                className="rounded-lg"
+              />
+              <span className="text-slate-400 text-sm">CulturaMeet - Cultural Festival Platform</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <Link href="/results" className="text-slate-400 hover:text-white text-sm transition-colors">
+                Results
+              </Link>
+              <Link href="/scoreboard" className="text-slate-400 hover:text-white text-sm transition-colors">
+                Scoreboard
+              </Link>
+              <Link href="/participant" className="text-slate-400 hover:text-white text-sm transition-colors">
+                Participants
+              </Link>
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
-
-
-
-
-
-
-
-
