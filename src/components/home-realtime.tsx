@@ -51,7 +51,7 @@ export function HomeRealtime({ teams: initialTeams, liveScores: initialLiveScore
             <div className="flex items-center justify-between mb-2">
               <div className="relative w-16 h-16 shrink-0">
                 <Image
-                  src="/img/hero/Fest-logo.webp"
+                  src="/festival-logo.png"
                   alt="Funoon Fiesta Logo"
                   fill
                   className="object-contain"
@@ -63,7 +63,7 @@ export function HomeRealtime({ teams: initialTeams, liveScores: initialLiveScore
             {/* Illustration - Full Width (Mobile) */}
             <div className="relative w-full h-[250px] sm:h-[320px] md:h-[380px] mx-auto -mt-2">
               <Image
-                src="/img/hero/Left-side-image-for-hero section.webp"
+                src="/festival-logo.png"
                 alt="Cultural Heritage Illustration"
                 fill
                 className="object-contain"
@@ -106,7 +106,7 @@ export function HomeRealtime({ teams: initialTeams, liveScores: initialLiveScore
             {/* Left Side - Illustration */}
             <div className="relative w-full h-[500px] xl:h-[600px]">
               <Image
-                src="/img/hero/Left-side-image-for-hero section.webp"
+                src="/festival-logo.png"
                 alt="Cultural Heritage Illustration"
                 fill
                 className="object-contain"
@@ -122,7 +122,7 @@ export function HomeRealtime({ teams: initialTeams, liveScores: initialLiveScore
                 <div className="shrink-0 flex flex-col items-center">
                   <div className="relative w-24 h-24 xl:w-36 xl:h-36 mb-1">
                     <Image
-                      src="/img/hero/Fest-logo.webp"
+                      src="/festival-logo.png"
                       alt="Funoon Fiesta Logo"
                       fill
                       className="object-contain"
