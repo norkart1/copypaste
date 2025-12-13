@@ -389,27 +389,27 @@ export function ScoreboardTable({
     const allPrograms = [...singlePrograms, ...groupPrograms, ...generalPrograms];
 
     return (
-      <div className="overflow-x-auto rounded-lg bg-white border border-gray-200 shadow-lg">
+      <div className="overflow-x-auto rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl">
         <table className="table-auto w-full border-collapse text-sm sm:text-base">
           <thead>
-            <tr className="bg-[#8B4513] text-white">
-              <th className="px-4 py-4 text-left">PROGRAM NAME</th>
-              {teamNames.map((team) => (
-                <th key={team} className="px-4 py-4 text-center">
+            <tr className="bg-gradient-to-r from-[#8B4513] to-[#6B3410] text-white">
+              <th className="px-4 py-4 text-left rounded-tl-2xl">PROGRAM NAME</th>
+              {teamNames.map((team, idx) => (
+                <th key={team} className={`px-4 py-4 text-center ${idx === teamNames.length - 1 ? 'rounded-tr-2xl' : ''}`}>
                   {team}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-white/10">
             {allPrograms.map((program) => {
               const programResults = results.filter((r) => r.program_id === program.id);
               return (
                 <tr
                   key={program.id}
-                  className="hover:bg-gray-50 transition-colors duration-200"
+                  className="hover:bg-white/5 transition-colors duration-200"
                 >
-                  <td className="px-4 py-3 font-semibold text-[#8B4513]">
+                  <td className="px-4 py-3 font-semibold text-amber-400">
                     <div className="flex items-center space-x-2">
                       <Trophy className="w-4 h-4" />
                       <span>{program.name.toUpperCase()}</span>
@@ -434,7 +434,7 @@ export function ScoreboardTable({
                           <div className="flex flex-col items-center gap-1.5">
                             {teamEntries.map(({ entry }, idx) => (
                               <div key={idx} className="flex items-center justify-center space-x-2">
-                                <span className="font-medium text-gray-900">
+                                <span className="font-medium text-white">
                                   {entry.score}
                                 </span>
                                 <span className="text-lg transform hover:scale-110 transition-transform">
@@ -446,7 +446,7 @@ export function ScoreboardTable({
                             ))}
                           </div>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-gray-500">-</span>
                         )}
                       </td>
                     );
@@ -454,20 +454,20 @@ export function ScoreboardTable({
                 </tr>
               );
             })}
-            <tr className="bg-gray-100 font-bold">
-              <td className="px-4 py-4 text-gray-900">TOTAL</td>
+            <tr className="bg-white/10 font-bold">
+              <td className="px-4 py-4 text-white">TOTAL</td>
               {teams.map((team) => (
-                <td key={team.id} className="px-4 py-4 text-center text-lg text-[#8B4513]">
+                <td key={team.id} className="px-4 py-4 text-center text-lg text-emerald-400">
                   {getTotalPointsForTeam(team.id)}
                 </td>
               ))}
             </tr>
-            <tr className="bg-red-50 font-semibold">
-              <td className="px-4 py-3 text-gray-900">MINUS POINTS</td>
-              {teams.map((team) => {
+            <tr className="bg-red-500/10 font-semibold">
+              <td className="px-4 py-3 text-white rounded-bl-2xl">MINUS POINTS</td>
+              {teams.map((team, idx) => {
                 const penaltyTotal = getTotalPenaltyPoints(team.id);
                 return (
-                  <td key={team.id} className="px-4 py-3 text-center text-red-600">
+                  <td key={team.id} className={`px-4 py-3 text-center text-red-400 ${idx === teams.length - 1 ? 'rounded-br-2xl' : ''}`}>
                     {penaltyTotal > 0 ? `-${penaltyTotal}` : "-"}
                   </td>
                 );
@@ -494,11 +494,11 @@ export function ScoreboardTable({
   return (
     <div className="container mx-auto px-4 py-12 md:px-12">
       <div className="flex flex-col items-center mb-8 space-y-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-[#8B4513] text-center">
+        <h1 className="text-3xl md:text-4xl font-bold text-white text-center">
           <span className="flex items-center justify-center space-x-3">
-            <Medal className="w-8 h-8 text-[#8B4513]" />
+            <Medal className="w-8 h-8 text-amber-400" />
             <span>SCOREBOARD</span>
-            <Medal className="w-8 h-8 text-[#8B4513]" />
+            <Medal className="w-8 h-8 text-amber-400" />
           </span>
         </h1>
       </div>

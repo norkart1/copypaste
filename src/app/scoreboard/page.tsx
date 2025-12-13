@@ -26,7 +26,7 @@ export default async function ScoreboardPage() {
   const data = await getScoreboardData();
 
   return (
-    <main className="min-h-screen bg-[#fffcf5]">
+    <main className="min-h-screen bg-gradient-to-br from-[#0a1628] via-[#0d2137] to-[#0a1628]">
       <ScoreboardRealtime
         teams={data.teams}
         programs={data.programs}
