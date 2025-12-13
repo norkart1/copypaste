@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Bell, X, ExternalLink, CheckCheck } from "lucide-react";
+import { Bell, X, ExternalLink, CheckCheck, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { getPusherClient, CHANNELS } from "@/lib/pusher-client";
@@ -23,7 +23,6 @@ export function NotificationBell({
   const router = useRouter();
   const bellRef = useRef<HTMLButtonElement>(null);
 
-  // Listen for new notifications
   useEffect(() => {
     const pusher = getPusherClient();
     const channel = pusher.subscribe(CHANNELS.RESULTS);
@@ -32,7 +31,6 @@ export function NotificationBell({
       setNotifications((prev) => [data.notification, ...prev]);
       setUnreadCount((prev) => prev + 1);
 
-      // Show browser notification if permission granted
       if ("Notification" in window && Notification.permission === "granted") {
         new Notification(data.notification.title, {
           body: data.notification.message,
@@ -48,7 +46,6 @@ export function NotificationBell({
     };
   }, []);
 
-  // Request notification permission on mount
   useEffect(() => {
     if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
@@ -56,11 +53,9 @@ export function NotificationBell({
   }, []);
 
   const handleNotificationClick = useCallback(async (notification: Notification) => {
-    // Navigate to result page first
     router.push(`/results/${notification.programId}`);
     setIsOpen(false);
 
-    // Mark as read after navigation
     if (!notification.read) {
       try {
         await fetch(`/api/notifications/${notification.id}/read`, {
@@ -96,25 +91,26 @@ export function NotificationBell({
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "relative p-3 rounded-full transition-all duration-300",
-          "bg-white/80 backdrop-blur-md shadow-lg border border-white/20",
-          "hover:bg-white hover:shadow-xl hover:border-purple-200",
-          isOpen && "bg-white ring-2 ring-purple-500/20"
+          "relative p-3 rounded-2xl transition-all duration-300",
+          "bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl",
+          "shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-white/30",
+          "hover:shadow-[0_8px_30px_rgba(139,69,19,0.15)] hover:border-[#8B4513]/20",
+          isOpen && "bg-gradient-to-br from-[#8B4513]/10 to-[#A0522D]/5 ring-2 ring-[#8B4513]/20"
         )}
         aria-label="Notifications"
       >
         <Bell className={cn(
           "w-5 h-5 transition-colors",
-          unreadCount > 0 ? "text-purple-600" : "text-gray-600"
+          unreadCount > 0 ? "text-[#8B4513]" : "text-gray-500"
         )} />
 
         <AnimatePresence>
           {unreadCount > 0 && (
             <motion.span
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-[10px] font-bold rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1 shadow-sm border-2 border-white"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0, rotate: 180 }}
+              className="absolute -top-1 -right-1 bg-gradient-to-br from-[#8B4513] to-[#6B3410] text-white text-[10px] font-bold rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1.5 shadow-lg border-2 border-white"
             >
               {unreadCount > 9 ? "9+" : unreadCount}
             </motion.span>
@@ -125,104 +121,117 @@ export function NotificationBell({
       <AnimatePresence>
         {isOpen && (
           <>
-            <div
-              className="fixed inset-0 z-40"
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-40 bg-black/10 backdrop-blur-sm"
               onClick={() => setIsOpen(false)}
             />
             <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.95, transformOrigin: "top right" }}
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className="absolute right-0 mt-3 w-80 md:w-96 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 z-50 max-h-[600px] overflow-hidden flex flex-col ring-1 ring-black/5"
+              className="absolute right-0 mt-3 w-80 md:w-96 z-50 max-h-[500px] overflow-hidden flex flex-col"
             >
-              <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-white/50">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-gray-800 text-lg">
-                    Notifications
-                  </h3>
-                  {unreadCount > 0 && (
-                    <span className="bg-purple-100 text-purple-700 text-xs font-medium px-2 py-0.5 rounded-full">
-                      {unreadCount} new
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center gap-1">
-                  {unreadCount > 0 && (
-                    <button
-                      onClick={handleMarkAllAsRead}
-                      className="p-1.5 text-gray-500 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                      title="Mark all as read"
-                    >
-                      <CheckCheck className="w-4 h-4" />
-                    </button>
-                  )}
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="overflow-y-auto flex-1 custom-scrollbar">
-                {notifications.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-                    <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                      <Bell className="w-8 h-8 text-gray-300" />
-                    </div>
-                    <p className="text-gray-900 font-medium">No notifications yet</p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      We'll let you know when results are published!
-                    </p>
-                  </div>
-                ) : (
-                  <div className="divide-y divide-gray-50">
-                    {notifications.map((notification) => (
-                      <motion.div
-                        key={notification.id}
-                        layout
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        onClick={() => handleNotificationClick(notification)}
-                        className={cn(
-                          "p-4 cursor-pointer transition-all hover:bg-gray-50 group relative",
-                          !notification.read && "bg-purple-50/40 hover:bg-purple-50/60"
+              <div className="bg-gradient-to-br from-white to-gray-50/95 backdrop-blur-xl rounded-3xl shadow-[0_20px_60px_rgba(0,0,0,0.15)] border border-white/50 overflow-hidden">
+                <div className="relative px-5 py-4 border-b border-gray-100/80">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#8B4513]/5 to-transparent" />
+                  <div className="relative flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8B4513] to-[#A0522D] flex items-center justify-center shadow-lg">
+                        <Bell className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-gray-800 text-lg">Notifications</h3>
+                        {unreadCount > 0 && (
+                          <span className="text-xs text-[#8B4513] font-medium">{unreadCount} unread</span>
                         )}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {unreadCount > 0 && (
+                        <button
+                          onClick={handleMarkAllAsRead}
+                          className="p-2 text-gray-500 hover:text-[#8B4513] hover:bg-[#8B4513]/10 rounded-xl transition-all"
+                          title="Mark all as read"
+                        >
+                          <CheckCheck className="w-4 h-4" />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-xl transition-all"
                       >
-                        <div className="flex gap-3">
-                          <div className={cn(
-                            "w-2 h-2 rounded-full mt-2 flex-shrink-0 transition-colors",
-                            !notification.read ? "bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.4)]" : "bg-gray-200"
-                          )} />
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-                          <div className="flex-1 min-w-0 space-y-1">
-                            <div className="flex justify-between items-start gap-2">
-                              <p className={cn(
-                                "text-sm font-semibold leading-tight",
-                                !notification.read ? "text-gray-900" : "text-gray-700"
-                              )}>
-                                {notification.title}
+                <div className="overflow-y-auto flex-1 max-h-[350px]">
+                  {notifications.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                      <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl flex items-center justify-center mb-4 shadow-inner">
+                        <Sparkles className="w-8 h-8 text-gray-300" />
+                      </div>
+                      <p className="text-gray-800 font-semibold">All caught up!</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        New results will appear here
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="p-2">
+                      {notifications.map((notification, index) => (
+                        <motion.div
+                          key={notification.id}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          onClick={() => handleNotificationClick(notification)}
+                          className={cn(
+                            "p-4 cursor-pointer rounded-2xl transition-all mb-2 group relative overflow-hidden",
+                            !notification.read 
+                              ? "bg-gradient-to-r from-[#8B4513]/10 to-[#8B4513]/5 hover:from-[#8B4513]/15 hover:to-[#8B4513]/10 border border-[#8B4513]/10" 
+                              : "hover:bg-gray-50 border border-transparent"
+                          )}
+                        >
+                          <div className="flex gap-3">
+                            <div className={cn(
+                              "w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0 transition-all",
+                              !notification.read 
+                                ? "bg-gradient-to-br from-[#8B4513] to-[#A0522D] shadow-[0_0_10px_rgba(139,69,19,0.4)]" 
+                                : "bg-gray-200"
+                            )} />
+
+                            <div className="flex-1 min-w-0">
+                              <div className="flex justify-between items-start gap-2 mb-1">
+                                <p className={cn(
+                                  "text-sm font-semibold leading-tight",
+                                  !notification.read ? "text-gray-900" : "text-gray-600"
+                                )}>
+                                  {notification.title}
+                                </p>
+                                <span className="text-[10px] text-gray-400 whitespace-nowrap bg-gray-100 px-2 py-0.5 rounded-full">
+                                  {new Date(notification.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                              </div>
+
+                              <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                                {notification.message}
                               </p>
-                              <span className="text-[10px] text-gray-400 whitespace-nowrap">
-                                {new Date(notification.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                              </span>
-                            </div>
 
-                            <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
-                              {notification.message}
-                            </p>
-
-                            <div className="flex items-center gap-1 text-xs text-purple-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity pt-1">
-                              <span>View Results</span>
-                              <ExternalLink className="w-3 h-3" />
+                              <div className="flex items-center gap-1 text-xs text-[#8B4513] font-medium opacity-0 group-hover:opacity-100 transition-all pt-2">
+                                <span>View Details</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </motion.div>
           </>

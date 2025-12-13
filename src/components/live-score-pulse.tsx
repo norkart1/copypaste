@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Activity, Medal } from "lucide-react";
+import { TrendingUp, Medal, Zap, ChevronRight, Trophy } from "lucide-react";
 import type { Team } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
 import {
@@ -21,7 +21,6 @@ interface LiveScorePulseProps {
   liveScores: Map<string, number>;
 }
 
-// Team color mappings
 const TEAM_COLORS: Record<string, { primary: string; gradient: string; light: string; stroke: string }> = {
   SAMARQAND: {
     primary: "#D72638",
@@ -99,7 +98,6 @@ function TeamCard({ team, index, maxPoints }: TeamCardProps) {
         } as React.CSSProperties : {}}
       >
         <div className="bg-white rounded-2xl p-3 sm:p-4 md:p-5 backdrop-blur-sm relative overflow-hidden">
-          {/* Decorative gradient overlay */}
           <div
             className="absolute top-0 right-0 w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 opacity-5 rounded-full blur-3xl"
             style={{ backgroundColor: team.colors.primary }}
@@ -288,36 +286,43 @@ export function LiveScorePulse({ teams, liveScores }: LiveScorePulseProps) {
 
   return (
     <section className="space-y-6 sm:space-y-8 md:space-y-10">
-      {/* Header Section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-center space-y-2 sm:space-y-3 md:space-y-4 px-2"
+        className="relative"
       >
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 md:gap-4 mb-1 sm:mb-2">
-          <div className="relative">
-            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 p-2 sm:p-2.5 md:p-3 rounded-lg sm:rounded-xl md:rounded-2xl shadow-md sm:shadow-lg">
-              <Activity className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" />
+        <div className="flex flex-col items-center justify-center text-center px-4">
+          <div className="relative inline-flex items-center justify-center mb-5">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 rounded-full blur-2xl scale-150" />
+            <div className="relative flex items-center gap-3 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200/50 rounded-full px-5 py-2.5 shadow-sm">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 shadow-lg">
+                <Zap className="w-4 h-4 text-white" />
+              </div>
+              <span className="text-sm font-semibold text-emerald-700">Live Updates Active</span>
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
             </div>
-            <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="absolute inset-0 bg-cyan-400 rounded-lg sm:rounded-xl md:rounded-2xl opacity-20 blur-xl"
-            />
           </div>
-          <div className="text-center sm:text-left">
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-serif text-[#8B4513] mb-0.5 sm:mb-1">
-              Live Score Pulse
-            </h2>
-            <p className="text-gray-600 text-xs sm:text-sm md:text-base">Real-time team rankings & performance</p>
+          
+          <div className="flex items-center gap-4 mb-3">
+            <div className="hidden sm:block h-px w-12 bg-gradient-to-r from-transparent to-gray-300" />
+            <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-amber-500" />
+            <div className="hidden sm:block h-px w-12 bg-gradient-to-l from-transparent to-gray-300" />
           </div>
+          
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 text-gray-900">
+            Live Score Pulse
+          </h2>
+          <p className="text-gray-500 text-sm sm:text-base max-w-md">
+            Track real-time team rankings and performance as the competition unfolds
+          </p>
         </div>
       </motion.div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-        {/* Team Cards */}
         <div className="lg:col-span-2 order-2 lg:order-1">
           <div className="grid grid-cols-1 gap-3 sm:gap-4 md:grid-cols-2">
             {sortedTeams.map((team, index) => (
@@ -326,14 +331,12 @@ export function LiveScorePulse({ teams, liveScores }: LiveScorePulseProps) {
           </div>
         </div>
 
-        {/* Distribution Charts */}
         <div className="order-1 lg:order-2">
           <DesktopDistributionChart teams={sortedTeams} />
           <MobileDistributionChart teams={sortedTeams} />
         </div>
       </div>
 
-      {/* Action Buttons */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -342,27 +345,18 @@ export function LiveScorePulse({ teams, liveScores }: LiveScorePulseProps) {
       >
         <Link
           href="/scoreboard"
-          className="group relative bg-gradient-to-r from-[#8B4513] to-[#6B3410] hover:from-[#6B3410] hover:to-[#8B4513] transition-all py-3 sm:py-4 px-6 sm:px-10 rounded-lg sm:rounded-xl text-sm sm:text-base md:text-lg font-semibold text-white shadow-xl hover:shadow-2xl transform-gpu transition-all duration-300 hover:scale-105 overflow-hidden w-full sm:w-auto text-center"
+          className="group relative bg-gradient-to-r from-gray-900 to-gray-800 hover:from-gray-800 hover:to-gray-700 transition-all py-3.5 sm:py-4 px-8 sm:px-10 rounded-2xl text-sm sm:text-base font-semibold text-white shadow-xl hover:shadow-2xl transform-gpu transition-all duration-300 hover:scale-105 overflow-hidden w-full sm:w-auto text-center flex items-center justify-center gap-2"
         >
-          <span className="relative z-10">View Full Scoreboard</span>
-          <motion.div
-            className="absolute inset-0 bg-white/20"
-            initial={{ x: '-100%' }}
-            whileHover={{ x: '100%' }}
-            transition={{ duration: 0.5 }}
-          />
+          <Trophy className="w-5 h-5" />
+          <span>View Full Scoreboard</span>
+          <ChevronRight className="w-4 h-4 opacity-60 group-hover:translate-x-1 transition-transform" />
         </Link>
         <Link
           href="/results"
-          className="group relative bg-gradient-to-r from-[#0d7377] to-[#0a5a5d] hover:from-[#0a5a5d] hover:to-[#0d7377] transition-all py-3 sm:py-4 px-6 sm:px-10 rounded-lg sm:rounded-xl text-sm sm:text-base md:text-lg font-semibold text-white shadow-xl hover:shadow-2xl transform-gpu transition-all duration-300 hover:scale-105 overflow-hidden w-full sm:w-auto text-center"
+          className="group relative bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-gray-300 transition-all py-3.5 sm:py-4 px-8 sm:px-10 rounded-2xl text-sm sm:text-base font-semibold text-gray-700 shadow-sm hover:shadow-md transform-gpu transition-all duration-300 hover:scale-105 w-full sm:w-auto text-center flex items-center justify-center gap-2"
         >
-          <span className="relative z-10">View Results</span>
-          <motion.div
-            className="absolute inset-0 bg-white/20"
-            initial={{ x: '-100%' }}
-            whileHover={{ x: '100%' }}
-            transition={{ duration: 0.5 }}
-          />
+          <span>Browse Results</span>
+          <ChevronRight className="w-4 h-4 opacity-60 group-hover:translate-x-1 transition-transform" />
         </Link>
       </motion.div>
     </section>
