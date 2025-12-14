@@ -241,113 +241,133 @@ export function TeamLeadersShowcase({ teams }: TeamLeadersShowcaseProps) {
                     }}
                     transition={{ duration: 0.4 }}
                   >
-                    {/* Card - Modern Dark Glass Design */}
+                    {/* Card - Ultra Modern Glassmorphism */}
                     <div className={cn(
-                      "relative rounded-3xl overflow-hidden transition-all duration-500 group",
-                      isActive ? "shadow-2xl" : "shadow-lg"
-                    )}
-                    style={{
-                      background: `linear-gradient(135deg, ${colors.primary}15, ${colors.primary}05)`,
-                      border: `1px solid ${colors.primary}30`
-                    }}
-                    >
-                      {/* Glass Background */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95 backdrop-blur-xl" />
-                      
-                      {/* Accent Glow */}
+                      "relative rounded-[2rem] overflow-hidden transition-all duration-500 group",
+                      isActive ? "shadow-2xl shadow-black/40" : "shadow-xl"
+                    )}>
+                      {/* Animated Gradient Background */}
                       <div 
-                        className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full blur-3xl opacity-30"
+                        className="absolute inset-0"
+                        style={{
+                          background: `linear-gradient(160deg, ${colors.primary}30 0%, transparent 40%), 
+                                       linear-gradient(340deg, ${colors.primary}15 0%, transparent 40%),
+                                       linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%)`
+                        }}
+                      />
+                      
+                      {/* Floating Orbs */}
+                      <div 
+                        className="absolute -top-20 -right-20 w-48 h-48 rounded-full blur-3xl opacity-40 animate-pulse"
+                        style={{ backgroundColor: colors.primary }}
+                      />
+                      <div 
+                        className="absolute -bottom-16 -left-16 w-36 h-36 rounded-full blur-3xl opacity-20"
                         style={{ backgroundColor: colors.primary }}
                       />
 
                       {/* Content */}
-                      <div className="relative px-6 py-8 text-center">
-                        {/* Team Badge */}
-                        <div className="mb-6">
+                      <div className="relative px-8 py-10">
+                        {/* Header with Team Name */}
+                        <div className="flex items-center justify-between mb-8">
                           <span 
-                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase"
+                            className="px-4 py-2 rounded-2xl text-[11px] font-black tracking-[0.2em] uppercase backdrop-blur-md"
                             style={{ 
-                              backgroundColor: `${colors.primary}20`,
-                              color: colors.primary,
-                              border: `1px solid ${colors.primary}40`
+                              background: `linear-gradient(135deg, ${colors.primary}40, ${colors.primary}20)`,
+                              color: 'white',
+                              border: `1px solid ${colors.primary}50`
                             }}
                           >
-                            <Crown className="w-3 h-3" />
                             {team.name}
                           </span>
-                        </div>
-
-                        {/* Avatar */}
-                        <div className="relative inline-block mb-6">
                           <div 
-                            className="w-28 h-28 rounded-2xl overflow-hidden bg-slate-700 relative z-10 shadow-xl"
-                            style={{ border: `3px solid ${colors.primary}` }}
-                          >
-                            <Image
-                              src={getLeaderPhoto(team.leader_photo, 0)}
-                              alt={leaders[0]}
-                              fill
-                              className="object-cover transition-transform duration-700 group-hover:scale-110"
-                            />
-                          </div>
-                          {/* Floating Crown Badge */}
-                          <div 
-                            className="absolute -bottom-2 -right-2 z-20 p-2.5 rounded-xl shadow-lg"
-                            style={{ backgroundColor: colors.primary }}
+                            className="p-2.5 rounded-2xl backdrop-blur-md"
+                            style={{ 
+                              background: `linear-gradient(135deg, ${colors.primary}, ${colors.primary}cc)`,
+                              boxShadow: `0 8px 32px ${colors.primary}40`
+                            }}
                           >
                             <Crown className="w-4 h-4 text-white" />
                           </div>
                         </div>
 
-                        {/* Names */}
-                        <div className="mb-5">
-                          <h3 className="text-xl font-bold text-white mb-2">
+                        {/* Avatar with Glow Ring */}
+                        <div className="relative flex justify-center mb-6">
+                          <div className="relative">
+                            {/* Outer Glow Ring */}
+                            <div 
+                              className="absolute inset-0 rounded-full blur-md scale-110 opacity-60"
+                              style={{ background: `linear-gradient(135deg, ${colors.primary}, transparent)` }}
+                            />
+                            {/* Avatar Container */}
+                            <div 
+                              className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-white/10 shadow-2xl"
+                              style={{ 
+                                background: `linear-gradient(135deg, ${colors.primary}50, ${colors.primary}20)`,
+                                padding: '3px'
+                              }}
+                            >
+                              <div className="w-full h-full rounded-full overflow-hidden bg-slate-800">
+                                <Image
+                                  src={getLeaderPhoto(team.leader_photo, 0)}
+                                  alt={leaders[0]}
+                                  fill
+                                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                              </div>
+                            </div>
+                            {/* Status Dot */}
+                            <div className="absolute bottom-2 right-2 w-5 h-5 rounded-full bg-emerald-500 border-4 border-slate-900 shadow-lg" />
+                          </div>
+                        </div>
+
+                        {/* Name & Title */}
+                        <div className="text-center mb-6">
+                          <h3 className="text-2xl font-bold text-white mb-2 tracking-tight">
                             {leaders.length > 1 ? (
                               <span className="flex flex-col">
                                 <span>{leaders[0]}</span>
-                                <span className="text-base text-slate-400 font-medium">& {leaders[1]}</span>
+                                <span className="text-lg text-white/60 font-medium">& {leaders[1]}</span>
                               </span>
                             ) : (
                               leaders[0]
                             )}
                           </h3>
-                          <div 
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold"
-                            style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}
-                          >
-                            <Sparkles className="w-3 h-3" />
-                            <span>Team Captain</span>
-                          </div>
-                        </div>
-
-                        {/* Quote */}
-                        <div className="relative mb-6 px-2">
-                          <p className="text-slate-400 text-sm leading-relaxed">
-                            "{team.description || "Leading with passion, inspiring with action."}"
+                          <p className="text-white/50 text-sm font-medium flex items-center justify-center gap-2">
+                            <span className="w-8 h-px bg-gradient-to-r from-transparent to-white/30" />
+                            Team Captain
+                            <span className="w-8 h-px bg-gradient-to-l from-transparent to-white/30" />
                           </p>
                         </div>
 
-                        {/* Stats Row */}
-                        <div className="flex justify-center gap-6 mb-6 py-4 border-y border-slate-700/50">
-                          <div className="text-center">
-                            <div className="text-lg font-bold text-white">3</div>
-                            <div className="text-xs text-slate-500">Members</div>
+                        {/* Stats Cards */}
+                        <div className="grid grid-cols-2 gap-3 mb-6">
+                          <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10 text-center">
+                            <div className="text-2xl font-bold text-white">3</div>
+                            <div className="text-xs text-white/40 font-medium uppercase tracking-wider">Members</div>
                           </div>
-                          <div className="text-center">
-                            <div className="text-lg font-bold" style={{ color: colors.primary }}>Top 4</div>
-                            <div className="text-xs text-slate-500">Rank</div>
+                          <div 
+                            className="rounded-2xl p-4 text-center border"
+                            style={{ 
+                              background: `linear-gradient(135deg, ${colors.primary}20, transparent)`,
+                              borderColor: `${colors.primary}30`
+                            }}
+                          >
+                            <div className="text-2xl font-bold" style={{ color: colors.primary }}>#{index + 1}</div>
+                            <div className="text-xs text-white/40 font-medium uppercase tracking-wider">Rank</div>
                           </div>
                         </div>
 
-                        {/* Contact Action */}
+                        {/* CTA Button */}
                         <button
-                          className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-[1.02]"
+                          className="w-full py-4 rounded-2xl text-sm font-bold transition-all duration-300 hover:scale-[1.02] hover:shadow-lg flex items-center justify-center gap-2"
                           style={{
-                            backgroundColor: colors.primary,
-                            color: 'white'
+                            background: `linear-gradient(135deg, ${colors.primary}, ${colors.primary}cc)`,
+                            color: 'white',
+                            boxShadow: `0 8px 32px ${colors.primary}30`
                           }}
                         >
-                          <Mail className="w-4 h-4" />
+                          <Sparkles className="w-4 h-4" />
                           <span>View Profile</span>
                         </button>
                       </div>
