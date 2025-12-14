@@ -233,37 +233,103 @@ function DesktopDistributionChart({ teams }: DistributionChartProps) {
 }
 
 function MobileDistributionChart({ teams }: DistributionChartProps) {
+  const maxPoints = Math.max(...teams.map(t => t.totalPoints), 1);
+  
   return (
-    <div className="md:hidden flex flex-col h-[350px] p-4 rounded-3xl bg-white border border-gray-100 shadow-lg">
-      <div className="mb-4">
-        <h4 className="text-base font-bold text-gray-900">Points Distribution</h4>
-        <p className="text-xs text-gray-500">Team performance overview</p>
+    <div className="md:hidden flex flex-col p-4 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl">
+      <div className="mb-5 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-3">
+          <Trophy className="w-4 h-4 text-amber-400" />
+          <span className="text-xs font-semibold text-amber-400 uppercase tracking-wide">Leaderboard</span>
+        </div>
+        <h4 className="text-lg font-bold text-white">Points Distribution</h4>
+        <p className="text-xs text-slate-400 mt-1">Live team rankings</p>
       </div>
-      <div className="flex-1 w-full min-h-[250px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={teams}
-            layout="vertical"
-            margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0f0f0" />
-            <XAxis type="number" hide />
-            <YAxis
-              dataKey="name"
-              type="category"
-              axisLine={false}
-              tickLine={false}
-              width={80}
-              tick={{ fill: '#4B5563', fontSize: 11, fontWeight: 600 }}
-            />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.02)' }} />
-            <Bar dataKey="totalPoints" radius={[0, 10, 10, 0]} barSize={20} animationDuration={1500}>
-              {teams.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.colors.primary} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+      
+      <div className="space-y-3">
+        {teams.map((team, index) => {
+          const percentage = maxPoints > 0 ? (team.totalPoints / maxPoints) * 100 : 0;
+          const isTopThree = index < 3;
+          
+          return (
+            <motion.div
+              key={team.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.08 }}
+              className="relative"
+            >
+              <div 
+                className={`relative flex items-center gap-3 p-3 rounded-2xl transition-all duration-300 ${
+                  isTopThree 
+                    ? 'bg-gradient-to-r from-slate-800/80 to-slate-700/50 border border-slate-600/50' 
+                    : 'bg-slate-800/40 border border-slate-700/30'
+                }`}
+              >
+                <div 
+                  className={`flex items-center justify-center w-8 h-8 rounded-xl font-bold text-sm shadow-lg ${
+                    index === 0 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-amber-900' :
+                    index === 1 ? 'bg-gradient-to-br from-slate-300 to-slate-400 text-slate-700' :
+                    index === 2 ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-orange-900' :
+                    'bg-slate-700 text-slate-400'
+                  }`}
+                >
+                  {index + 1}
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-white text-sm truncate">{team.name}</span>
+                      {isTopThree && (
+                        <Medal 
+                          className="w-4 h-4 shrink-0" 
+                          style={{ color: getMedalColor(index) }} 
+                        />
+                      )}
+                    </div>
+                    <span 
+                      className="font-bold text-sm shrink-0 ml-2"
+                      style={{ color: team.colors.primary }}
+                    >
+                      {formatNumber(team.totalPoints)}
+                    </span>
+                  </div>
+                  
+                  <div className="relative h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${percentage}%` }}
+                      transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                      className="absolute inset-y-0 left-0 rounded-full"
+                      style={{ 
+                        background: `linear-gradient(90deg, ${team.colors.primary}, ${team.colors.primary}dd)`,
+                        boxShadow: `0 0 10px ${team.colors.primary}40`
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+      
+      <div className="mt-4 pt-3 border-t border-slate-700/50">
+        <div className="flex items-center justify-center gap-4 text-xs text-slate-500">
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-amber-400" />
+            <span>1st</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-slate-400" />
+            <span>2nd</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-2 h-2 rounded-full bg-orange-400" />
+            <span>3rd</span>
+          </div>
+        </div>
       </div>
     </div>
   );
