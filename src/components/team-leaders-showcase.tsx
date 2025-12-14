@@ -241,114 +241,115 @@ export function TeamLeadersShowcase({ teams }: TeamLeadersShowcaseProps) {
                     }}
                     transition={{ duration: 0.4 }}
                   >
-                    {/* Card */}
+                    {/* Card - Modern Dark Glass Design */}
                     <div className={cn(
-                      "relative bg-white rounded-[2rem] overflow-hidden transition-all duration-500 group",
-                      isActive ? `shadow-2xl ${colors.shadow}` : "shadow-lg"
-                    )}>
-                      {/* Decorative Header */}
-                      <div className={`h-32 bg-gradient-to-br ${colors.gradient} relative overflow-hidden`}>
-                        <div className="absolute inset-0 opacity-30 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
-                        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-                        <div className="absolute top-4 left-4">
-                          <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-[10px] font-bold tracking-widest uppercase">
+                      "relative rounded-3xl overflow-hidden transition-all duration-500 group",
+                      isActive ? "shadow-2xl" : "shadow-lg"
+                    )}
+                    style={{
+                      background: `linear-gradient(135deg, ${colors.primary}15, ${colors.primary}05)`,
+                      border: `1px solid ${colors.primary}30`
+                    }}
+                    >
+                      {/* Glass Background */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-slate-800/90 to-slate-900/95 backdrop-blur-xl" />
+                      
+                      {/* Accent Glow */}
+                      <div 
+                        className="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full blur-3xl opacity-30"
+                        style={{ backgroundColor: colors.primary }}
+                      />
+
+                      {/* Content */}
+                      <div className="relative px-6 py-8 text-center">
+                        {/* Team Badge */}
+                        <div className="mb-6">
+                          <span 
+                            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase"
+                            style={{ 
+                              backgroundColor: `${colors.primary}20`,
+                              color: colors.primary,
+                              border: `1px solid ${colors.primary}40`
+                            }}
+                          >
+                            <Crown className="w-3 h-3" />
                             {team.name}
                           </span>
                         </div>
-                      </div>
 
-                      {/* Content Body */}
-                      <div className="px-8 pb-8 pt-16 text-center relative">
-                        {/* Floating Avatar(s) */}
-                        <div className="absolute -top-16 left-1/2 -translate-x-1/2">
-                          {leaders.length > 1 && !isValidImageUrl(team.leader_photo) ? (
-                            <div className="flex -space-x-4">
-                              {leaders.slice(0, 2).map((leader, i) => (
-                                <div key={i} className={cn(
-                                  "relative w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-100",
-                                  i === 1 ? "mt-4" : "z-10"
-                                )}>
-                                  <Image
-                                    src={getLeaderPhoto(team.leader_photo, i)}
-                                    alt={leader}
-                                    fill
-                                    className="object-cover"
-                                  />
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="relative inline-block">
-                              <div className="w-32 h-32 rounded-full border-[6px] border-white shadow-xl overflow-hidden bg-gray-100 relative z-10">
-                                <Image
-                                  src={getLeaderPhoto(team.leader_photo, 0)}
-                                  alt={leaders[0]}
-                                  fill
-                                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                />
-                              </div>
-                              {/* Glowing Ring */}
-                              <div className={cn(
-                                "absolute inset-0 rounded-full blur-xl opacity-40 -z-10 scale-110",
-                                `bg-${colors.primary}`
-                              )} style={{ backgroundColor: colors.primary }} />
-
-                              <div className="absolute bottom-2 right-0 z-20 bg-yellow-400 text-white p-2 rounded-full border-4 border-white shadow-lg">
-                                <Crown className="w-4 h-4" />
-                              </div>
-                            </div>
-                          )}
+                        {/* Avatar */}
+                        <div className="relative inline-block mb-6">
+                          <div 
+                            className="w-28 h-28 rounded-2xl overflow-hidden bg-slate-700 relative z-10 shadow-xl"
+                            style={{ border: `3px solid ${colors.primary}` }}
+                          >
+                            <Image
+                              src={getLeaderPhoto(team.leader_photo, 0)}
+                              alt={leaders[0]}
+                              fill
+                              className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                          </div>
+                          {/* Floating Crown Badge */}
+                          <div 
+                            className="absolute -bottom-2 -right-2 z-20 p-2.5 rounded-xl shadow-lg"
+                            style={{ backgroundColor: colors.primary }}
+                          >
+                            <Crown className="w-4 h-4 text-white" />
+                          </div>
                         </div>
 
                         {/* Names */}
-                        <div className="mb-6">
-                          <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                        <div className="mb-5">
+                          <h3 className="text-xl font-bold text-white mb-2">
                             {leaders.length > 1 ? (
                               <span className="flex flex-col">
                                 <span>{leaders[0]}</span>
-                                <span className="text-lg text-gray-500 font-medium">& {leaders[1]}</span>
+                                <span className="text-base text-slate-400 font-medium">& {leaders[1]}</span>
                               </span>
                             ) : (
                               leaders[0]
                             )}
                           </h3>
-                          <div className="flex items-center justify-center gap-2 mt-2">
-                            <Sparkles className="w-3 h-3 text-yellow-500" />
-                            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Team Captain</span>
-                            <Sparkles className="w-3 h-3 text-yellow-500" />
+                          <div 
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold"
+                            style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}
+                          >
+                            <Sparkles className="w-3 h-3" />
+                            <span>Team Captain</span>
                           </div>
                         </div>
 
                         {/* Quote */}
-                        <div className="relative mb-8">
-                          <Quote className="w-8 h-8 text-gray-100 absolute -top-4 -left-2 -z-10" />
-                          <p className="text-gray-600 text-sm italic leading-relaxed relative z-10">
-                            "{team.description || "Leading with passion, inspiring with action, and striving for victory."}"
+                        <div className="relative mb-6 px-2">
+                          <p className="text-slate-400 text-sm leading-relaxed">
+                            "{team.description || "Leading with passion, inspiring with action."}"
                           </p>
                         </div>
 
-                        {/* Contact Action */}
-                        {team.contact ? (
-                          <a
-                            href={`tel:${team.contact}`}
-                            className={cn(
-                              "inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 w-full justify-center group/btn",
-                              `bg-${colors.light} text-${colors.primary} hover:bg-${colors.primary} hover:text-white`
-                            )}
-                            style={{
-                              backgroundColor: colors.light,
-                              color: colors.primary
-                            }}
-                          >
-                            <Phone className="w-4 h-4" />
-                            <span>Contact Captain</span>
-                          </a>
-                        ) : (
-                          <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gray-50 text-gray-400 text-sm font-medium w-full justify-center cursor-not-allowed">
-                            <Mail className="w-4 h-4" />
-                            <span>Private Contact</span>
+                        {/* Stats Row */}
+                        <div className="flex justify-center gap-6 mb-6 py-4 border-y border-slate-700/50">
+                          <div className="text-center">
+                            <div className="text-lg font-bold text-white">3</div>
+                            <div className="text-xs text-slate-500">Members</div>
                           </div>
-                        )}
+                          <div className="text-center">
+                            <div className="text-lg font-bold" style={{ color: colors.primary }}>Top 4</div>
+                            <div className="text-xs text-slate-500">Rank</div>
+                          </div>
+                        </div>
+
+                        {/* Contact Action */}
+                        <button
+                          className="inline-flex items-center justify-center gap-2 w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-[1.02]"
+                          style={{
+                            backgroundColor: colors.primary,
+                            color: 'white'
+                          }}
+                        >
+                          <Mail className="w-4 h-4" />
+                          <span>View Profile</span>
+                        </button>
                       </div>
                     </div>
                   </motion.div>

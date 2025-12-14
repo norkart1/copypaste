@@ -195,38 +195,103 @@ interface DistributionChartProps {
 }
 
 function DesktopDistributionChart({ teams }: DistributionChartProps) {
+  const maxPoints = Math.max(...teams.map(t => t.totalPoints), 1);
+  
   return (
-    <div className="hidden md:flex flex-col h-full min-h-[400px] p-6 rounded-3xl bg-white border border-gray-100 shadow-xl">
-      <div className="mb-6">
-        <h4 className="text-lg font-bold text-gray-900">Points Distribution</h4>
-        <p className="text-sm text-gray-500">Comparative analysis of team performance</p>
+    <div className="hidden md:flex flex-col h-full min-h-[400px] p-6 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl">
+      <div className="mb-6 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 mb-3">
+          <Trophy className="w-4 h-4 text-amber-400" />
+          <span className="text-xs font-semibold text-amber-400 uppercase tracking-wide">Leaderboard</span>
+        </div>
+        <h4 className="text-xl font-bold text-white">Points Distribution</h4>
+        <p className="text-sm text-slate-400 mt-1">Live team rankings</p>
       </div>
-      <div className="flex-1 w-full min-h-[300px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={teams} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-            <XAxis
-              dataKey="name"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: '#6B7280', fontSize: 12, fontWeight: 600 }}
-              dy={10}
-              tickFormatter={(value) => value.slice(0, 3).toUpperCase()}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: '#9CA3AF', fontSize: 12 }}
-              dx={-10}
-            />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(0,0,0,0.02)' }} />
-            <Bar dataKey="totalPoints" radius={[8, 8, 0, 0]} animationDuration={1500}>
-              {teams.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.colors.primary} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+      
+      <div className="flex-1 space-y-4">
+        {teams.map((team, index) => {
+          const percentage = maxPoints > 0 ? (team.totalPoints / maxPoints) * 100 : 0;
+          const isTopThree = index < 3;
+          
+          return (
+            <motion.div
+              key={team.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.08 }}
+              className="group"
+            >
+              <div 
+                className={`relative flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
+                  isTopThree 
+                    ? 'bg-gradient-to-r from-slate-800/80 to-slate-700/50 border border-slate-600/50' 
+                    : 'bg-slate-800/40 border border-slate-700/30'
+                }`}
+              >
+                <div 
+                  className={`flex items-center justify-center w-10 h-10 rounded-xl font-bold text-base shadow-lg transition-transform group-hover:scale-110 ${
+                    index === 0 ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-amber-900' :
+                    index === 1 ? 'bg-gradient-to-br from-slate-300 to-slate-400 text-slate-700' :
+                    index === 2 ? 'bg-gradient-to-br from-orange-400 to-orange-600 text-orange-900' :
+                    'bg-slate-700 text-slate-400'
+                  }`}
+                >
+                  {index + 1}
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-3">
+                      <span className="font-semibold text-white text-base">{team.name}</span>
+                      {isTopThree && (
+                        <Medal 
+                          className="w-5 h-5" 
+                          style={{ color: getMedalColor(index) }} 
+                        />
+                      )}
+                    </div>
+                    <span 
+                      className="font-bold text-lg"
+                      style={{ color: team.colors.primary }}
+                    >
+                      {formatNumber(team.totalPoints)} pts
+                    </span>
+                  </div>
+                  
+                  <div className="relative h-3 bg-slate-700/50 rounded-full overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${percentage}%` }}
+                      transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                      className="absolute inset-y-0 left-0 rounded-full"
+                      style={{ 
+                        background: `linear-gradient(90deg, ${team.colors.primary}, ${team.colors.primary}cc)`,
+                        boxShadow: `0 0 15px ${team.colors.primary}50`
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+      
+      <div className="mt-6 pt-4 border-t border-slate-700/50">
+        <div className="flex items-center justify-center gap-6 text-sm text-slate-500">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-amber-400" />
+            <span>1st Place</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-slate-400" />
+            <span>2nd Place</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-orange-400" />
+            <span>3rd Place</span>
+          </div>
+        </div>
       </div>
     </div>
   );
