@@ -239,7 +239,18 @@ export async function updateRegistrationSchedule(schedule: RegistrationSchedule)
 
 export async function isRegistrationOpen(now: Date = new Date()): Promise<boolean> {
   const schedule = await getRegistrationSchedule();
-  return now >= new Date(schedule.startDateTime) && now <= new Date(schedule.endDateTime);
+  const start = new Date(schedule.startDateTime);
+  const end = new Date(schedule.endDateTime);
+  
+  // Debug logging for timezone issues
+  console.log('[Registration Check]', {
+    now: now.toISOString(),
+    start: start.toISOString(),
+    end: end.toISOString(),
+    isOpen: now >= start && now <= end
+  });
+  
+  return now >= start && now <= end;
 }
 
 /**
