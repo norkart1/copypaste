@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useMemo, useState, useCallback } from "react";
-import { CheckCircle2, Eye, Pencil, Search, Trash2, Download, FileText, FileSpreadsheet } from "lucide-react";
+import React, { useEffect, useMemo, useState, useCallback, useTransition, useOptimistic } from "react";
+import { CheckCircle2, Eye, Pencil, Search, Trash2, Download, FileText, FileSpreadsheet, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +37,52 @@ export const StudentManager = React.memo(function StudentManager({
   deleteAction,
   bulkDeleteAction,
 }: StudentManagerProps) {
+  const [isPending, startTransition] = useTransition();
+  const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
+  
+  const [optimisticStudents, removeOptimistic] = useOptimistic(
+    students,
+    (state, deletedId: string) => state.filter(s => s.id !== deletedId)
+  );
+
+  const handleDelete = useCallback((studentId: string) => {
+    setDeletingIds(prev => new Set(prev).add(studentId));
+    removeOptimistic(studentId);
+    
+    const formData = new FormData();
+    formData.append("id", studentId);
+    
+    startTransition(async () => {
+      try {
+        await deleteAction(formData);
+      } finally {
+        setDeletingIds(prev => {
+          const next = new Set(prev);
+          next.delete(studentId);
+          return next;
+        });
+      }
+    });
+  }, [deleteAction, removeOptimistic]);
+
+  const handleBulkDelete = useCallback((ids: string[]) => {
+    ids.forEach(id => {
+      setDeletingIds(prev => new Set(prev).add(id));
+      removeOptimistic(id);
+    });
+    
+    const formData = new FormData();
+    formData.append("student_ids", ids.join(","));
+    
+    startTransition(async () => {
+      try {
+        await bulkDeleteAction(formData);
+      } finally {
+        setDeletingIds(new Set());
+      }
+    });
+  }, [bulkDeleteAction, removeOptimistic]);
+
   const teamOptions = useMemo(
     () => [{ value: "", label: "All Teams" }, ...teams.map((team) => ({ value: team.id, label: team.name }))],
     [teams],
@@ -85,7 +131,7 @@ export const StudentManager = React.memo(function StudentManager({
   }, [debouncedSearchQuery, teamFilter, programFilter, sort]);
 
   const filteredStudents = useMemo(() => {
-    return students.filter((student) => {
+    return optimisticStudents.filter((student) => {
       const query = debouncedSearchQuery.trim().toLowerCase();
       const matchesSearch =
         student.name.toLowerCase().includes(query) || student.chest_no.toLowerCase().includes(query);
@@ -95,7 +141,7 @@ export const StudentManager = React.memo(function StudentManager({
         : true;
       return matchesSearch && matchesTeam && matchesProgram;
     });
-  }, [students, debouncedSearchQuery, teamFilter, programFilter, studentRegistrationsMap]);
+  }, [optimisticStudents, debouncedSearchQuery, teamFilter, programFilter, studentRegistrationsMap]);
 
   const sortedStudents = useMemo(() => {
     const list = [...filteredStudents];
@@ -153,7 +199,7 @@ export const StudentManager = React.memo(function StudentManager({
     });
   }, []);
 
-  const viewStudent = viewStudentId ? students.find((student) => student.id === viewStudentId) : null;
+  const viewStudent = viewStudentId ? optimisticStudents.find((student) => student.id === viewStudentId) : null;
 
   const exportToCSV = () => {
     const headers = ["Name", "Chest Number", "Team", "Total Points"];
@@ -451,13 +497,21 @@ export const StudentManager = React.memo(function StudentManager({
                     <Pencil className="h-4 w-4" />
                     Edit
                   </Button>
-                  <form action={deleteAction}>
-                    <input type="hidden" name="id" value={student.id} />
-                    <Button type="submit" variant="danger" size="sm" className="gap-2">
+                  <Button 
+                    type="button" 
+                    variant="danger" 
+                    size="sm" 
+                    className="gap-2"
+                    disabled={deletingIds.has(student.id)}
+                    onClick={() => handleDelete(student.id)}
+                  >
+                    {deletingIds.has(student.id) ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
                       <Trash2 className="h-4 w-4" />
-                      Delete
-                    </Button>
-                  </form>
+                    )}
+                    {deletingIds.has(student.id) ? "Deleting..." : "Delete"}
+                  </Button>
                 </div>
               </div>
               {isEditing && (
@@ -575,12 +629,24 @@ export const StudentManager = React.memo(function StudentManager({
         <p className="text-sm text-white/70">
           You are deleting {selected.size} student{selected.size === 1 ? "" : "s"}. This cannot be undone.
         </p>
-        <form action={bulkDeleteAction} className="space-y-4">
-          <input type="hidden" name="student_ids" value={selectedIdsValue} />
-          <Button type="submit" variant="danger" className="w-full" disabled={!hasSelection}>
+        <div className="space-y-4">
+          <Button 
+            type="button" 
+            variant="danger" 
+            className="w-full" 
+            disabled={!hasSelection || isPending}
+            onClick={() => {
+              handleBulkDelete(Array.from(selected));
+              setShowDeleteModal(false);
+              setSelected(new Set());
+            }}
+          >
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            ) : null}
             Delete {selected.size} student{selected.size === 1 ? "" : "s"}
           </Button>
-        </form>
+        </div>
       </Modal>
     </div>
   );
