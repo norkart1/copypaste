@@ -52,84 +52,78 @@ export default async function AdminDashboardPage() {
   const totalResults = data.pending.length + data.approved.length;
   const approvalRate = totalResults ? Math.round((data.approved.length / totalResults) * 100) : 0;
   const pendingRate = totalResults ? Math.round((data.pending.length / totalResults) * 100) : 0;
-  const quickActions = [
-    { label: "Add Program", href: "/admin/programs", accent: "from-cyan-500 to-blue-600" },
-    { label: "Add Students", href: "/admin/students", accent: "from-emerald-500 to-lime-500" },
-    { label: "Assign Jury", href: "/admin/assign", accent: "from-violet-500 to-fuchsia-500" },
-    { label: "Review Pending", href: "/admin/pending-results", accent: "from-amber-500 to-orange-500" },
-  ];
 
   return (
-    <div className="space-y-8">
-      <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <div className="rounded-3xl border border-white/10 bg-linear-to-br from-indigo-900/70 via-fuchsia-900/50 to-emerald-900/40 p-8 text-white shadow-[0_25px_80px_rgba(14,165,233,0.15)]">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <Badge tone="cyan">CulturaMeet Control</Badge>
-            <span className="text-sm text-white/70">Approval rate • {approvalRate}%</span>
+    <div className="space-y-5">
+      <section className="grid gap-4 lg:grid-cols-[2fr_1fr]">
+        <div className="rounded-2xl border border-white/5 bg-gradient-to-br from-purple-900/60 via-fuchsia-900/40 to-teal-900/30 p-6 text-white shadow-lg">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <Badge tone="cyan" className="text-[10px] px-2 py-0.5">CulturaMeet Control</Badge>
+            <span className="text-xs text-white/60">Approval rate • {approvalRate}%</span>
           </div>
-          <h1 className="mt-6 text-3xl font-semibold leading-tight">
+          <h1 className="mt-4 text-xl md:text-2xl font-medium leading-snug">
             Live overview of submissions, results, and team momentum.
           </h1>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            <div className="rounded-2xl bg-white/10 p-4">
-              <p className="text-xs uppercase tracking-widest text-white/70">Current Leader</p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+            <div className="rounded-xl bg-white/10 backdrop-blur-sm p-3">
+              <p className="text-[10px] uppercase tracking-widest text-white/60">Current Leader</p>
               {topTeam ? (
                 <>
-                  <p className="mt-2 text-2xl font-semibold">{topTeam.name}</p>
-                  <p className="text-sm text-white/70">{formatNumber(topTeam.livePoints)} pts</p>
+                  <p className="mt-1 text-lg font-semibold">{topTeam.name}</p>
+                  <p className="text-xs text-white/60">{formatNumber(topTeam.livePoints)} pts</p>
                 </>
               ) : (
-                <p className="mt-2 text-sm text-white/70">No teams found.</p>
+                <p className="mt-1 text-xs text-white/60">No teams found.</p>
               )}
             </div>
-            <div className="rounded-2xl bg-white/5 p-4">
-              <p className="text-xs uppercase tracking-widest text-white/70">Pending Reviews</p>
-              <p className="mt-2 text-2xl font-semibold">{data.pending.length}</p>
-              <p className="text-sm text-white/70">{pendingRate}% of all submissions</p>
+            <div className="rounded-xl bg-white/5 backdrop-blur-sm p-3">
+              <p className="text-[10px] uppercase tracking-widest text-white/60">Pending Reviews</p>
+              <p className="mt-1 text-lg font-semibold">{data.pending.length}</p>
+              <p className="text-xs text-white/60">{pendingRate}% of all submissions</p>
             </div>
           </div>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-2">
             <Link
               href="/admin/pending-results"
-              className="inline-flex items-center gap-2 rounded-full bg-white/20 px-5 py-2 text-sm font-semibold text-white backdrop-blur hover:bg-white/30"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-white/15 px-4 py-2 text-xs font-medium text-white backdrop-blur hover:bg-white/25 transition-colors"
             >
-              Review Pending <ArrowUpRight className="h-4 w-4" />
+              Review Pending <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
             <Link
               href="/admin/approved-results"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-2 text-sm font-semibold text-white/80 hover:text-white"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/20 px-4 py-2 text-xs font-medium text-white/80 hover:text-white hover:border-white/30 transition-colors"
             >
               View Approved
             </Link>
           </div>
         </div>
-        <div className="rounded-3xl border border-white/10 bg-slate-900/70 p-6">
+        <div className="rounded-2xl border border-white/5 bg-slate-900/60 backdrop-blur-sm p-5">
           <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 text-emerald-300" />
+            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
             <div>
-              <p className="text-sm text-white/60">Approval Rate</p>
-              <p className="text-2xl font-semibold text-white">{approvalRate}%</p>
+              <p className="text-xs text-white/50">Approval Rate</p>
+              <p className="text-xl font-semibold text-white">{approvalRate}%</p>
             </div>
           </div>
-          <div className="mt-6 flex items-center gap-3">
-            <Clock className="h-5 w-5 text-amber-300" />
+          <div className="mt-4 flex items-center gap-3">
+            <Clock className="h-4 w-4 text-amber-400" />
             <div>
-              <p className="text-sm text-white/60">Pending Items</p>
-              <p className="text-2xl font-semibold text-white">{data.pending.length}</p>
+              <p className="text-xs text-white/50">Pending Items</p>
+              <p className="text-xl font-semibold text-white">{data.pending.length}</p>
             </div>
           </div>
-          <div className="mt-8 space-y-3">
-            <p className="text-xs uppercase tracking-widest text-white/60">Quick Links</p>
+          <div className="mt-5 space-y-2">
+            <p className="text-[10px] uppercase tracking-widest text-white/50">Quick Links</p>
             <div className="flex flex-wrap gap-2">
               <Link
                 href="/admin/add-result"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-1.5 text-sm text-white/80 hover:text-white"
+                className="inline-flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-xs text-white/70 hover:text-white hover:border-white/20 transition-colors"
               >
-                Submit Result <ArrowUpRight className="h-4 w-4" />
+                Submit Result <ArrowUpRight className="h-3 w-3" />
               </Link>
               <Link
                 href="/admin/jury"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-1.5 text-sm text-white/80 hover:text-white"
+                className="inline-flex items-center gap-1 rounded-lg border border-white/10 px-3 py-1.5 text-xs text-white/70 hover:text-white hover:border-white/20 transition-colors"
               >
                 Manage Jury
               </Link>
@@ -138,110 +132,91 @@ export default async function AdminDashboardPage() {
         </div>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-3 grid-cols-2 lg:grid-cols-4">
         {data.stats.map((stat) => (
-          <Card key={stat.label} className="rounded-3xl border-white/10 bg-slate-900/70 p-5 text-white">
-            <p className="text-xs uppercase tracking-widest text-white/60">{stat.label}</p>
-            <p className="mt-4 text-3xl font-semibold">{stat.value}</p>
+          <Card key={stat.label} className="rounded-xl border-white/5 bg-slate-900/60 backdrop-blur-sm p-4 text-white">
+            <p className="text-[10px] uppercase tracking-widest text-white/50">{stat.label}</p>
+            <p className="mt-2 text-2xl font-semibold">{stat.value}</p>
           </Card>
         ))}
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2 bg-slate-900/70 border-white/10 rounded-3xl">
+      <section className="grid gap-4 lg:grid-cols-3">
+        <Card className="lg:col-span-2 bg-slate-900/60 border-white/5 rounded-xl backdrop-blur-sm">
           <LiveScorePie teams={data.teams} liveScores={liveScoreMap} />
         </Card>
-        <Card className="bg-slate-900/70 border-white/10 rounded-3xl p-6 text-white">
-          <CardTitle>Insights</CardTitle>
-          <CardDescription className="mt-1 text-white/70">
+        <Card className="bg-slate-900/60 border-white/5 rounded-xl backdrop-blur-sm p-5 text-white">
+          <CardTitle className="text-base">Insights</CardTitle>
+          <CardDescription className="mt-0.5 text-xs text-white/60">
             Snapshot of live performance across all houses.
           </CardDescription>
-          <div className="mt-6 space-y-5">
+          <div className="mt-4 space-y-4">
             <div>
-              <p className="text-xs uppercase tracking-widest text-white/50">Runner Up</p>
-              <p className="mt-1 text-2xl font-semibold">{runnerUp?.name ?? "—"}</p>
+              <p className="text-[10px] uppercase tracking-widest text-white/40">Runner Up</p>
+              <p className="mt-0.5 text-lg font-semibold">{runnerUp?.name ?? "—"}</p>
               {runnerUp && (
-                <p className="text-sm text-white/70">{formatNumber(runnerUp.livePoints)} pts</p>
+                <p className="text-xs text-white/60">{formatNumber(runnerUp.livePoints)} pts</p>
               )}
             </div>
             <div>
-              <p className="text-xs uppercase tracking-widest text-white/50">Total Points Logged</p>
-              <p className="mt-1 text-2xl font-semibold">{formatNumber(totalPoints)}</p>
+              <p className="text-[10px] uppercase tracking-widest text-white/40">Total Points Logged</p>
+              <p className="mt-0.5 text-lg font-semibold">{formatNumber(totalPoints)}</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-widest text-white/50">Pending Items</p>
-              <p className="mt-1 text-2xl font-semibold">{data.pending.length}</p>
-              <p className="text-sm text-white/70">{pendingRate}% of submissions</p>
+              <p className="text-[10px] uppercase tracking-widest text-white/40">Pending Items</p>
+              <p className="mt-0.5 text-lg font-semibold">{data.pending.length}</p>
+              <p className="text-xs text-white/60">{pendingRate}% of submissions</p>
             </div>
           </div>
         </Card>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-2">
-        <Card className="bg-white/5 border-white/10 rounded-3xl">
-          <CardTitle>Team Highlights</CardTitle>
-          <CardDescription className="mt-2 text-white/70">Quick roster overview</CardDescription>
-          <div className="mt-6 space-y-4">
-            {sortedTeams.slice(0, 6).map((team) => (
+      <section className="grid gap-4 md:grid-cols-2">
+        <Card className="bg-slate-900/60 border-white/5 rounded-xl backdrop-blur-sm p-5">
+          <CardTitle className="text-base">Team Highlights</CardTitle>
+          <CardDescription className="mt-0.5 text-xs text-white/60">Quick roster overview</CardDescription>
+          <div className="mt-4 space-y-2">
+            {sortedTeams.slice(0, 5).map((team) => (
               <div
                 key={team.id}
-                className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                className="flex items-center justify-between rounded-lg border border-white/5 bg-white/5 px-3 py-2"
               >
                 <div>
-                  <p className="text-lg font-semibold text-white">{team.name}</p>
-                  <p className="text-xs text-white/60">Leader · {team.leader}</p>
+                  <p className="text-sm font-medium text-white">{team.name}</p>
+                  <p className="text-[10px] text-white/50">Leader · {team.leader}</p>
                 </div>
-                <p className="text-2xl font-bold text-amber-200">{formatNumber(team.livePoints)}</p>
+                <p className="text-lg font-bold text-amber-300">{formatNumber(team.livePoints)}</p>
               </div>
             ))}
           </div>
         </Card>
 
-        <Card className="bg-white/5 border-white/10 rounded-3xl">
-          <CardTitle>Latest Pending Results</CardTitle>
-          <CardDescription className="mt-2 text-white/70">
+        <Card className="bg-slate-900/60 border-white/5 rounded-xl backdrop-blur-sm p-5">
+          <CardTitle className="text-base">Latest Pending Results</CardTitle>
+          <CardDescription className="mt-0.5 text-xs text-white/60">
             Approve or reject from the Pending Results tab.
           </CardDescription>
-          <div className="mt-6 space-y-4">
-            {data.pending.slice(0, 5).map((result) => (
+          <div className="mt-4 space-y-2">
+            {data.pending.slice(0, 4).map((result) => (
               <div
                 key={result.id}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                className="rounded-lg border border-white/5 bg-white/5 px-3 py-2"
               >
-                <p className="text-sm text-white/60">Program #{result.program_id}</p>
-                <p className="font-semibold text-white">
+                <p className="text-[10px] text-white/50">Program #{result.program_id}</p>
+                <p className="text-sm font-medium text-white">
                   Submitted by {result.submitted_by}
                 </p>
-                <p className="text-xs text-white/50">
+                <p className="text-[10px] text-white/40">
                   {new Date(result.submitted_at).toLocaleString()}
                 </p>
               </div>
             ))}
             {data.pending.length === 0 && (
-              <p className="text-sm text-white/60">No pending entries.</p>
+              <p className="text-xs text-white/50">No pending entries.</p>
             )}
           </div>
         </Card>
       </section>
-      <section className="rounded-3xl border border-white/10 bg-slate-900/70 p-6">
-        <CardTitle className="text-white">Quick Actions</CardTitle>
-        <CardDescription className="mt-2 text-white/70">
-          Jump directly into the workflows you use most.
-        </CardDescription>
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {quickActions.map((action) => (
-            <Link key={action.label} href={action.href}>
-              <div
-                className={`rounded-2xl border border-white/10 bg-linear-to-r ${action.accent} p-4 text-white shadow-lg transition hover:scale-[1.01]`}
-              >
-                <p className="text-sm uppercase tracking-widest text-white/80">{action.label}</p>
-                <ArrowUpRight className="mt-4 h-5 w-5" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
-

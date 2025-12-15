@@ -40,21 +40,21 @@ export default function AdminSecureLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-slate-950/95 text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
       <Sidenavbar items={adminNav} heading="Admin Control">
-        <div className="flex min-h-screen flex-col gap-8 px-5 py-6 md:px-8 md:py-10">
-          <header className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm px-6 py-4 shadow-lg">
+        <div className="flex min-h-screen flex-col gap-6 px-4 py-4 md:px-6 md:py-6">
+          <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-white/5 bg-slate-900/50 backdrop-blur-md px-5 py-3">
             <div>
-              <p className="text-xs uppercase text-white/60">Admin Deck</p>
-              <h1 className="text-2xl font-semibold">Fest Command Center</h1>
+              <p className="text-[10px] uppercase tracking-wider text-white/50">Admin Deck</p>
+              <h1 className="text-xl font-semibold text-white">Fest Command Center</h1>
             </div>
             <form action={logoutAction}>
-              <Button type="submit" variant="ghost" className="hover:bg-white/10">
+              <Button type="submit" variant="ghost" className="text-white/70 hover:text-white hover:bg-white/10 text-sm">
                 Sign out
               </Button>
             </form>
           </header>
-          <section className="space-y-10">{children}</section>
+          <section className="space-y-6">{children}</section>
         </div>
       </Sidenavbar>
     </div>
