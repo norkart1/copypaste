@@ -10,6 +10,7 @@ import type {
   Student,
   Team,
 } from "./types";
+import { generateColorConfig } from "./team-colors";
 import { connectDB } from "./db";
 import {
   ApprovedResultModel,
@@ -509,3 +510,86 @@ const defaultPrograms: Program[] = [];
 const defaultAssignments: AssignedProgram[] = [];
 
 const defaultJury: Jury[] = [];
+
+export async function createTeam(input: {
+  name: string;
+  leader: string;
+  leader_photo?: string;
+  color: string;
+  description: string;
+  contact: string;
+  portal_password?: string;
+}): Promise<Team> {
+  await connectDB();
+  
+  const teamId = `team-${randomUUID().slice(0, 8)}`;
+  const colorConfig = generateColorConfig(input.color);
+  
+  const team = await TeamModel.create({
+    id: teamId,
+    name: input.name.toUpperCase(),
+    leader: input.leader,
+    leader_photo: input.leader_photo || "/img/team-leader.webp",
+    color: input.color,
+    colorConfig,
+    description: input.description,
+    contact: input.contact,
+    total_points: 0,
+    portal_password: input.portal_password || "",
+  });
+  
+  await LiveScoreModel.create({
+    team_id: teamId,
+    total_points: 0,
+  });
+  
+  const { emitTeamCreated } = await import("./pusher");
+  await emitTeamCreated(teamId);
+  
+  return JSON.parse(JSON.stringify(team)) as Team;
+}
+
+export async function updateTeamById(
+  id: string,
+  data: Partial<Omit<Team, "id" | "total_points">>
+): Promise<void> {
+  await connectDB();
+  
+  const updateData: Record<string, unknown> = { ...data };
+  
+  if (data.name) {
+    updateData.name = data.name.toUpperCase();
+  }
+  
+  if (data.color) {
+    updateData.colorConfig = generateColorConfig(data.color);
+  }
+  
+  await TeamModel.updateOne({ id }, updateData);
+  
+  const { emitTeamUpdated } = await import("./pusher");
+  await emitTeamUpdated(id);
+}
+
+export async function deleteTeamById(id: string): Promise<void> {
+  await connectDB();
+  
+  const studentsWithTeam = await StudentModel.countDocuments({ team_id: id });
+  if (studentsWithTeam > 0) {
+    throw new Error(`Cannot delete team: ${studentsWithTeam} students are assigned to this team. Please reassign or remove them first.`);
+  }
+  
+  await Promise.all([
+    TeamModel.deleteOne({ id }),
+    LiveScoreModel.deleteOne({ team_id: id }),
+  ]);
+  
+  const { emitTeamDeleted } = await import("./pusher");
+  await emitTeamDeleted(id);
+}
+
+export async function getTeamById(id: string): Promise<Team | null> {
+  await connectDB();
+  const team = await TeamModel.findOne({ id }).lean<Team>();
+  return team ? JSON.parse(JSON.stringify(team)) : null;
+}

@@ -5,6 +5,7 @@ import { LabelList, Pie, PieChart } from "recharts";
 
 import type { Team } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
+import { getTeamColors } from "@/lib/team-colors";
 import { Badge } from "@/components/ui/badge";
 import { CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import {
@@ -19,16 +20,6 @@ interface LiveScorePieProps {
   liveScores: Map<string, number>;
 }
 
-// Match team brand colors used across the app
-const TEAM_COLORS: Record<string, string> = {
-  SAMARQAND: "#D72638",
-  NAHAVAND: "#1E3A8A",
-  YAMAMA: "#7C3AED",
-  QURTUBA: "#FACC15",
-  MUQADDAS: "#059669",
-  BUKHARA: "#FB923C",
-};
-
 export function LiveScorePie({ teams, liveScores }: LiveScorePieProps) {
   const teamsWithScores = teams.map((team) => {
     const totalPoints = liveScores.get(team.id) ?? team.total_points;
@@ -37,21 +28,12 @@ export function LiveScorePie({ teams, liveScores }: LiveScorePieProps) {
 
   const sorted = [...teamsWithScores].sort((a, b) => b.totalPoints - a.totalPoints);
 
-  const chartData = sorted.map((team, index) => {
-    const fallbackPalette = [
-      "#D72638",
-      "#1E3A8A",
-      "#7C3AED",
-      "#FACC15",
-      "#059669",
-      "#FB923C",
-    ];
-    const fallback = fallbackPalette[index % fallbackPalette.length];
-    const fill = TEAM_COLORS[team.name] ?? fallback;
+  const chartData = sorted.map((team) => {
+    const colors = getTeamColors(team);
     return {
       team: team.name,
       points: team.totalPoints,
-      fill,
+      fill: colors.primary,
     };
   });
 

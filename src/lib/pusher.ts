@@ -16,6 +16,7 @@ export const CHANNELS = {
   REGISTRATIONS: "registrations",
   STUDENTS: "students",
   SCOREBOARD: "scoreboard",
+  TEAMS: "teams",
 } as const;
 
 // Event names
@@ -32,6 +33,9 @@ export const EVENTS = {
   STUDENT_UPDATED: "student-updated",
   STUDENT_DELETED: "student-deleted",
   SCOREBOARD_UPDATED: "scoreboard-updated",
+  TEAM_CREATED: "team-created",
+  TEAM_UPDATED: "team-updated",
+  TEAM_DELETED: "team-deleted",
 } as const;
 
 // Helper functions to emit events
@@ -147,6 +151,36 @@ export async function emitNotificationCreated(notification: {
 }) {
   await pusherServer.trigger(CHANNELS.RESULTS, "notification-created", {
     notification,
+    timestamp: new Date().toISOString(),
+  });
+}
+
+export async function emitTeamCreated(teamId: string) {
+  await pusherServer.trigger(CHANNELS.TEAMS, EVENTS.TEAM_CREATED, {
+    teamId,
+    timestamp: new Date().toISOString(),
+  });
+  await pusherServer.trigger(CHANNELS.SCOREBOARD, EVENTS.SCOREBOARD_UPDATED, {
+    timestamp: new Date().toISOString(),
+  });
+}
+
+export async function emitTeamUpdated(teamId: string) {
+  await pusherServer.trigger(CHANNELS.TEAMS, EVENTS.TEAM_UPDATED, {
+    teamId,
+    timestamp: new Date().toISOString(),
+  });
+  await pusherServer.trigger(CHANNELS.SCOREBOARD, EVENTS.SCOREBOARD_UPDATED, {
+    timestamp: new Date().toISOString(),
+  });
+}
+
+export async function emitTeamDeleted(teamId: string) {
+  await pusherServer.trigger(CHANNELS.TEAMS, EVENTS.TEAM_DELETED, {
+    teamId,
+    timestamp: new Date().toISOString(),
+  });
+  await pusherServer.trigger(CHANNELS.SCOREBOARD, EVENTS.SCOREBOARD_UPDATED, {
     timestamp: new Date().toISOString(),
   });
 }

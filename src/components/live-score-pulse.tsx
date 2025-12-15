@@ -5,6 +5,7 @@ import Link from "next/link";
 import { TrendingUp, Medal, Zap, ChevronRight, Trophy } from "lucide-react";
 import type { Team } from "@/lib/types";
 import { formatNumber } from "@/lib/utils";
+import { getTeamColors } from "@/lib/team-colors";
 import {
   BarChart,
   Bar,
@@ -20,45 +21,6 @@ interface LiveScorePulseProps {
   teams: Team[];
   liveScores: Map<string, number>;
 }
-
-const TEAM_COLORS: Record<string, { primary: string; gradient: string; light: string; stroke: string }> = {
-  SAMARQAND: {
-    primary: "#D72638",
-    gradient: "from-[#D72638] to-[#B01E2E]",
-    light: "#FEE2E2",
-    stroke: "#9F1221",
-  },
-  NAHAVAND: {
-    primary: "#1E3A8A",
-    gradient: "from-[#1E3A8A] to-[#172554]",
-    light: "#DBEAFE",
-    stroke: "#172554",
-  },
-  YAMAMA: {
-    primary: "#7C3AED",
-    gradient: "from-[#7C3AED] to-[#6D28D9]",
-    light: "#EDE9FE",
-    stroke: "#5B21B6",
-  },
-  QURTUBA: {
-    primary: "#FACC15",
-    gradient: "from-[#FACC15] to-[#EAB308]",
-    light: "#FEF9C3",
-    stroke: "#CA8A04",
-  },
-  MUQADDAS: {
-    primary: "#059669",
-    gradient: "from-[#059669] to-[#047857]",
-    light: "#D1FAE5",
-    stroke: "#065F46",
-  },
-  BUKHARA: {
-    primary: "#FB923C",
-    gradient: "from-[#FB923C] to-[#F97316]",
-    light: "#FFEDD5",
-    stroke: "#C2410C",
-  },
-};
 
 function getMedalColor(index: number): string {
   switch (index) {
@@ -91,11 +53,14 @@ function TeamCard({ team, index, maxPoints }: TeamCardProps) {
       className="relative group"
     >
       <div
-        className={`bg-gradient-to-br ${team.colors.gradient} rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl transform-gpu p-[3px] ${isTopThree ? 'ring-2 ring-offset-2 ring-offset-[#fffcf5]' : ''
+        className={`rounded-2xl shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl transform-gpu p-[3px] ${isTopThree ? 'ring-2 ring-offset-2 ring-offset-[#fffcf5]' : ''
           }`}
-        style={isTopThree ? {
-          boxShadow: `0 0 0 2px ${getMedalColor(index)}40, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)`
-        } as React.CSSProperties : {}}
+        style={{
+          background: `linear-gradient(to bottom right, ${team.colors.primary}, ${team.colors.gradient})`,
+          ...(isTopThree ? {
+            boxShadow: `0 0 0 2px ${getMedalColor(index)}40, 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)`
+          } : {})
+        }}
       >
         <div className="bg-white rounded-2xl p-3 sm:p-4 md:p-5 backdrop-blur-sm relative overflow-hidden">
           <div
@@ -403,12 +368,7 @@ function MobileDistributionChart({ teams }: DistributionChartProps) {
 export function LiveScorePulse({ teams, liveScores }: LiveScorePulseProps) {
   const teamsWithScores = teams.map((team) => {
     const totalPoints = liveScores.get(team.id) ?? team.total_points;
-    const colors = TEAM_COLORS[team.name] || {
-      primary: "#6B7280",
-      gradient: "from-gray-500 to-gray-600",
-      light: "#F9FAFB",
-      stroke: "#4B5563",
-    };
+    const colors = getTeamColors(team);
     return { ...team, totalPoints, colors };
   });
 

@@ -2,12 +2,22 @@ export type SectionType = "single" | "group" | "general";
 export type CategoryType = "A" | "B" | "C" | "none";
 export type GradeType = "A" | "B" | "C" | "none";
 
+export interface TeamColorConfig {
+  primary: string;
+  gradient: string;
+  light: string;
+  stroke: string;
+  accent: string;
+  shadow: string;
+}
+
 export interface Team {
   id: string;
   name: string;
   leader: string;
   leader_photo: string;
   color: string;
+  colorConfig?: TeamColorConfig;
   description: string;
   contact: string;
   total_points: number;

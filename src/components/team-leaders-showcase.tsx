@@ -6,56 +6,11 @@ import Image from "next/image";
 import { Crown, ChevronLeft, ChevronRight, Phone, Mail, Quote, Sparkles } from "lucide-react";
 import type { Team } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { getTeamColors } from "@/lib/team-colors";
 
 interface TeamLeadersShowcaseProps {
   teams: Team[];
 }
-
-// Team color mappings with richer palettes
-const TEAM_COLORS: Record<string, { primary: string; gradient: string; light: string; accent: string; shadow: string }> = {
-  SAMARQAND: {
-    primary: "#D72638",
-    gradient: "from-[#D72638] via-[#E94E5E] to-[#B01E2E]",
-    light: "#FFF1F2",
-    accent: "#FFD1D5",
-    shadow: "shadow-red-500/20",
-  },
-  NAHAVAND: {
-    primary: "#1E3A8A",
-    gradient: "from-[#1E3A8A] via-[#3B82F6] to-[#172554]",
-    light: "#EFF6FF",
-    accent: "#BFDBFE",
-    shadow: "shadow-blue-500/20",
-  },
-  YAMAMA: {
-    primary: "#7C3AED",
-    gradient: "from-[#7C3AED] via-[#8B5CF6] to-[#6D28D9]",
-    light: "#F5F3FF",
-    accent: "#DDD6FE",
-    shadow: "shadow-violet-500/20",
-  },
-  QURTUBA: {
-    primary: "#FACC15",
-    gradient: "from-[#FACC15] via-[#FDE047] to-[#CA8A04]",
-    light: "#FEFCE8",
-    accent: "#FEF08A",
-    shadow: "shadow-yellow-500/20",
-  },
-  MUQADDAS: {
-    primary: "#059669",
-    gradient: "from-[#059669] via-[#10B981] to-[#047857]",
-    light: "#ECFDF5",
-    accent: "#A7F3D0",
-    shadow: "shadow-emerald-500/20",
-  },
-  BUKHARA: {
-    primary: "#FB923C",
-    gradient: "from-[#FB923C] via-[#F97316] to-[#C2410C]",
-    light: "#FFF7ED",
-    accent: "#FED7AA",
-    shadow: "shadow-orange-500/20",
-  },
-};
 
 function parseLeaders(leaderString: string): string[] {
   return leaderString
@@ -216,13 +171,7 @@ export function TeamLeadersShowcase({ teams }: TeamLeadersShowcaseProps) {
             >
               {teams.map((team, index) => {
                 const leaders = parseLeaders(team.leader);
-                const colors = TEAM_COLORS[team.name] || {
-                  primary: "#6B7280",
-                  gradient: "from-gray-500 via-gray-600 to-gray-700",
-                  light: "#F9FAFB",
-                  accent: "#E5E7EB",
-                  shadow: "shadow-gray-500/20",
-                };
+                const colors = getTeamColors(team);
 
                 const isActive = index === currentIndex;
 

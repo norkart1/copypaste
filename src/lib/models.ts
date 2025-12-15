@@ -13,6 +13,18 @@ import type {
   Team,
 } from "./types";
 
+const TeamColorConfigSchema = new Schema(
+  {
+    primary: { type: String, required: true },
+    gradient: { type: String, required: true },
+    light: { type: String, required: true },
+    stroke: { type: String, required: true },
+    accent: { type: String, required: true },
+    shadow: { type: String, required: true },
+  },
+  { _id: false }
+);
+
 const TeamSchema = new Schema<Team>(
   {
     id: { type: String, required: true, unique: true },
@@ -20,6 +32,7 @@ const TeamSchema = new Schema<Team>(
     leader: { type: String, required: true },
     leader_photo: { type: String, required: true },
     color: { type: String, required: true },
+    colorConfig: { type: TeamColorConfigSchema },
     description: { type: String, required: true },
     contact: { type: String, required: true },
     total_points: { type: Number, default: 0 },
