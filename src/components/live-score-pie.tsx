@@ -52,25 +52,25 @@ export function LiveScorePie({ teams, liveScores }: LiveScorePieProps) {
   const totalPoints = sorted.reduce((sum, t) => sum + t.totalPoints, 0);
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       <div className="flex flex-col gap-2 p-6 pb-0">
         <div className="flex items-center gap-2">
-          <CardTitle className="text-xl text-white">CulturaMeet Team Spread</CardTitle>
+          <CardTitle className="text-xl text-gray-900">CulturaMeet Team Spread</CardTitle>
           <Badge
             tone="emerald"
-            className="ml-2 flex items-center gap-1 border border-emerald-500/40 bg-emerald-500/10 text-emerald-100"
+            className="ml-2 flex items-center gap-1 border border-emerald-500/30 bg-emerald-100 text-emerald-700"
           >
             <TrendingUp className="h-4 w-4" />
-            <span className="text-xs">Live</span>
+            <span className="text-xs font-medium">Live</span>
           </Badge>
         </div>
-        <CardDescription className="text-white/60">
+        <CardDescription className="text-gray-500">
           Share of total points across all houses in the fest.
         </CardDescription>
       </div>
       {totalPoints === 0 ? (
         <CardContent className="flex flex-1 flex-col items-center justify-center gap-2 pb-6 pt-4">
-          <p className="text-xs text-white/60">
+          <p className="text-sm text-gray-500">
             No scores have been recorded yet. The pie chart will appear as soon as results are added.
           </p>
         </CardContent>
@@ -78,7 +78,7 @@ export function LiveScorePie({ teams, liveScores }: LiveScorePieProps) {
         <CardContent className="flex flex-col items-center gap-4 pb-6 pt-2">
         <ChartContainer
           config={chartConfig}
-          className="[&_.recharts-text]:fill-white mx-auto h-[280px] md:h-[340px] w-full max-w-[420px]"
+          className="[&_.recharts-text]:fill-gray-700 mx-auto h-[280px] md:h-[340px] w-full max-w-[420px]"
         >
           <PieChart>
             <ChartTooltip
@@ -89,8 +89,8 @@ export function LiveScorePie({ teams, liveScores }: LiveScorePieProps) {
                   hideLabel
                   formatter={(value, name) => (
                     <span className="flex w-full items-center justify-between gap-4">
-                      <span className="text-xs text-muted-foreground">{name}</span>
-                      <span className="font-mono text-xs font-medium">
+                      <span className="text-xs text-gray-600">{name}</span>
+                      <span className="font-mono text-xs font-medium text-gray-900">
                         {formatNumber(value as number)} pts
                       </span>
                     </span>
@@ -123,9 +123,9 @@ export function LiveScorePie({ teams, liveScores }: LiveScorePieProps) {
             </Pie>
           </PieChart>
         </ChartContainer>
-        <p className="text-xs text-white/60">
+        <p className="text-xs text-gray-500">
           Total points across teams:{" "}
-          <span className="font-semibold text-white">{formatNumber(totalPoints)}</span>
+          <span className="font-semibold text-gray-900">{formatNumber(totalPoints)}</span>
         </p>
       </CardContent>
       )}

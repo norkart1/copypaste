@@ -75,42 +75,46 @@ export default function Sidenavbar({
   return (
     <div className="flex min-h-screen flex-col gap-4">
       {/* Mobile navbar + drawer menu */}
-      <div className="flex flex-col gap-4 md:hidden">
-        <header className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-          <span className="text-lg font-semibold text-white">{heading}</span>
+      <div className="flex flex-col gap-3 md:hidden px-3 pt-3">
+        <header className="flex items-center justify-between rounded-2xl bg-white shadow-sm px-4 py-3">
+          <span className="text-lg font-semibold text-gray-900">{heading}</span>
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"
-                className="border border-white/10 bg-white/5 hover:bg-white/10"
+                className="bg-gray-100 hover:bg-gray-200 text-gray-600"
               >
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-64 border-none bg-slate-950 p-0">
+            <SheetContent side="left" className="w-64 border-none bg-white p-0">
               <ScrollArea className="h-full py-4">
                 <nav className="space-y-1 px-3">
                   {items.map((item) => {
                     const IconComponent = item.icon ? ICONS[item.icon] : undefined;
+                    const isActive = pathname?.startsWith(item.href ?? "");
                     return (
                       <Button
                         key={item.href ?? item.label}
                         variant="ghost"
-                        className="w-full justify-start"
+                        className={cn(
+                          "w-full justify-start",
+                          isActive && "bg-emerald-50 text-emerald-700",
+                          !isActive && "text-gray-600 hover:bg-gray-100"
+                        )}
                         asChild
                         onClick={() => setMobileOpen(false)}
                       >
                         <Link
                           href={item.href ?? "#"}
-                          className={cn(
-                            "flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-sm",
-                            pathname?.startsWith(item.href ?? "") &&
-                              "bg-white/10 text-white",
-                          )}
+                          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium"
                         >
                           {IconComponent && (
-                            <IconComponent className="h-4 w-4 shrink-0" />
+                            <IconComponent className={cn(
+                              "h-4 w-4 shrink-0",
+                              isActive ? "text-emerald-600" : "text-gray-400"
+                            )} />
                           )}
                           <span>{item.label}</span>
                         </Link>
@@ -129,19 +133,19 @@ export default function Sidenavbar({
       <div className="hidden min-h-screen gap-6 md:flex relative">
         <aside
           className={cn(
-            "fixed left-3 top-6 bottom-6 z-50 flex flex-col rounded-xl border border-white/5 bg-slate-900/80 backdrop-blur-xl transition-all duration-300 ease-in-out shadow-xl shadow-black/30",
+            "fixed left-3 top-3 bottom-3 z-50 flex flex-col rounded-2xl bg-white shadow-xl transition-all duration-300 ease-in-out",
             isOpen ? "w-56" : "w-16",
           )}
         >
           <div
             className={cn(
-              "flex h-14 items-center border-b border-white/5",
+              "flex h-14 items-center border-b border-gray-100",
               isOpen ? "justify-between px-4" : "justify-center px-2",
             )}
           >
             <span
               className={cn(
-                "text-base font-semibold text-white transition-opacity",
+                "text-base font-semibold text-gray-900 transition-opacity",
                 isOpen ? "opacity-100" : "hidden",
               )}
             >
@@ -151,7 +155,7 @@ export default function Sidenavbar({
               variant="ghost"
               size="icon"
               onClick={() => setIsOpen((prev) => !prev)}
-              className="shrink-0 border border-white/5 bg-white/5 hover:bg-white/10 rounded-lg h-8 w-8"
+              className="shrink-0 bg-gray-100 hover:bg-gray-200 rounded-lg h-8 w-8 text-gray-600"
             >
               <Menu className="h-5 w-5" />
             </Button>
@@ -175,9 +179,9 @@ export default function Sidenavbar({
                       <Button
                         variant="ghost"
                         className={cn(
-                          "w-full rounded-lg h-9 text-sm",
-                          isActive && "bg-white/10 text-white",
-                          !isActive && "text-white/60 hover:bg-white/5 hover:text-white/90",
+                          "w-full rounded-xl h-10 text-sm",
+                          isActive && "bg-emerald-50 text-emerald-700",
+                          !isActive && "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
                           !isOpen ? "justify-center px-0" : "justify-start px-3",
                         )}
                         title={!isOpen ? item.label : undefined}
@@ -185,14 +189,14 @@ export default function Sidenavbar({
                         {IconComponent && (
                           <IconComponent className={cn(
                             "shrink-0",
-                            isActive ? "text-white" : "text-white/60",
-                            isOpen ? "h-4 w-4" : "h-4 w-4"
+                            isActive ? "text-emerald-600" : "text-gray-400",
+                            isOpen ? "h-4 w-4" : "h-5 w-5"
                           )} />
                         )}
                         {isOpen && (
                           <>
-                            <span className="flex-1 text-left ml-2 text-sm">{item.label}</span>
-                            <ChevronRight className="ml-auto h-3.5 w-3.5 shrink-0 transition-transform duration-200 data-[state=open]:rotate-90" />
+                            <span className="flex-1 text-left ml-2 text-sm font-medium">{item.label}</span>
+                            <ChevronRight className="ml-auto h-3.5 w-3.5 shrink-0 transition-transform duration-200 text-gray-400 data-[state=open]:rotate-90" />
                           </>
                         )}
                       </Button>
@@ -207,12 +211,12 @@ export default function Sidenavbar({
                             className={cn(
                               "w-full justify-start rounded-lg h-8 text-xs",
                               pathname?.startsWith(child.href) &&
-                                "bg-white/10 text-white",
-                              !pathname?.startsWith(child.href) && "text-white/50 hover:bg-white/5 hover:text-white/80"
+                                "bg-emerald-50 text-emerald-700",
+                              !pathname?.startsWith(child.href) && "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                             )}
                             asChild
                           >
-                            <Link href={child.href} className="w-full flex items-center">{child.label}</Link>
+                            <Link href={child.href} className="w-full flex items-center font-medium">{child.label}</Link>
                           </Button>
                         ))}
                       </CollapsibleContent>
@@ -223,10 +227,10 @@ export default function Sidenavbar({
                     key={item.href ?? item.label}
                     variant="ghost"
                     className={cn(
-                      "w-full rounded-lg h-9 text-sm",
+                      "w-full rounded-xl h-10 text-sm",
                       pathname?.startsWith(item.href ?? "") &&
-                        "bg-white/10 text-white",
-                      !pathname?.startsWith(item.href ?? "") && "text-white/60 hover:bg-white/5 hover:text-white/90",
+                        "bg-emerald-50 text-emerald-700",
+                      !pathname?.startsWith(item.href ?? "") && "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
                       !isOpen ? "justify-center px-0" : "justify-start px-3",
                     )}
                     asChild
@@ -243,12 +247,12 @@ export default function Sidenavbar({
                         <IconComponent
                           className={cn(
                             "shrink-0",
-                            pathname?.startsWith(item.href ?? "") ? "text-white" : "text-white/60",
-                            isOpen ? "h-4 w-4" : "h-4 w-4"
+                            pathname?.startsWith(item.href ?? "") ? "text-emerald-600" : "text-gray-400",
+                            isOpen ? "h-4 w-4" : "h-5 w-5"
                           )}
                         />
                       )}
-                      {isOpen && <span className="flex-1 text-left text-sm">{item.label}</span>}
+                      {isOpen && <span className="flex-1 text-left text-sm font-medium">{item.label}</span>}
                     </Link>
                   </Button>
                 );
