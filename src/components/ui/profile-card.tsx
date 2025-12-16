@@ -73,9 +73,9 @@ export function ProfileCard({
     >
       <div className="pointer-events-none absolute inset-x-0 -bottom-8 top-[75%] rounded-[28px]  z-0" />
 
-      <Card className="relative z-10 mx-auto w-full overflow-hidden rounded-[28px] border border-white/10  from-slate-900/95 via-slate-800/90 to-slate-900/95 text-white shadow-2xl">
+      <Card className="relative z-10 mx-auto w-full overflow-hidden rounded-[28px] bg-gradient-to-br from-emerald-50 to-white border border-gray-100 shadow-sm">
         <CardContent className="p-6 sm:p-8">
-          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 text-sm text-white/70">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 text-sm text-gray-500">
             <div className="flex items-center gap-2">
               <span
                 className={cn(
@@ -83,16 +83,16 @@ export function ProfileCard({
                   statusColor || "bg-emerald-500",
                 )}
               />
-              <span className="select-none text-white/80">{statusText}</span>
+              <span className="select-none text-gray-700">{statusText}</span>
             </div>
-            <div className="flex items-center gap-2 text-white/60">
+            <div className="flex items-center gap-2 text-gray-400">
               <Clock className="h-4 w-4" />
               <span className="tabular-nums">{timeText}</span>
             </div>
           </div>
 
           <div className="flex flex-wrap items-start gap-4 sm:gap-5">
-            <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-full ring-2 ring-fuchsia-400/30 shadow-lg">
+            <div className="relative h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-full ring-2 ring-emerald-200 shadow-lg">
               <Image
                 src={avatarSrc}
                 alt={`${name} avatar`}
@@ -102,15 +102,15 @@ export function ProfileCard({
               />
             </div>
             <div className="min-w-0 flex-1 space-y-1">
-              <h3 className="truncate text-xl font-semibold tracking-tight text-white sm:text-2xl">
+              <h3 className="truncate text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">
                 {name}
               </h3>
-              <p className="text-sm text-white/60">{role}</p>
+              <p className="text-sm text-gray-500">{role}</p>
               {juryId && (
-                <p className="text-xs text-white/50 font-mono">ID: {juryId.slice(0, 12)}...</p>
+                <p className="text-xs text-gray-400 font-mono">ID: {juryId.slice(0, 12)}...</p>
               )}
               {assignmentCount !== undefined && (
-                <p className="text-xs text-emerald-300/80 font-medium">
+                <p className="text-xs text-emerald-600 font-medium">
                   {assignmentCount} program{assignmentCount !== 1 ? "s" : ""} assigned
                 </p>
               )}
@@ -122,7 +122,7 @@ export function ProfileCard({
               <Button
                 variant="secondary"
                 onClick={handleCopy}
-                className="h-11 w-full justify-start gap-2 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-fuchsia-400/40 transition-all"
+                className="h-11 w-full justify-start gap-2 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:border-emerald-400 transition-all"
               >
                 <Copy className="h-4 w-4 shrink-0" />
                 <span className="truncate">{copied ? "Copied!" : "Copy Password"}</span>
@@ -133,7 +133,7 @@ export function ProfileCard({
               <Button
                 variant="secondary"
                 onClick={onEdit}
-                className="h-11 w-full justify-start gap-2 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-fuchsia-400/40 transition-all"
+                className="h-11 w-full justify-start gap-2 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:border-emerald-400 transition-all"
               >
                 <Edit className="h-4 w-4 shrink-0" />
                 <span>Edit</span>
@@ -143,7 +143,7 @@ export function ProfileCard({
               <Button
                 variant="danger"
                 onClick={onDelete}
-                className="h-11 w-full justify-start gap-2 rounded-xl border border-red-500/30 bg-red-500/10 text-white hover:bg-red-500/20 hover:border-red-500/50 transition-all"
+                className="h-11 w-full justify-start gap-2 rounded-xl border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-400 transition-all"
               >
                 <Trash2 className="h-4 w-4 shrink-0" />
                 <span>Delete</span>
@@ -160,7 +160,7 @@ export function ProfileCard({
                     setTimeout(() => setCopied(false), 1500);
                   } catch {}
                 }}
-                className="h-11 w-full justify-start gap-2 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-fuchsia-400/40 transition-all"
+                className="h-11 w-full justify-start gap-2 rounded-xl border border-gray-200 bg-gray-50 text-gray-700 hover:bg-gray-100 hover:border-emerald-400 transition-all"
               >
                 <Copy className="h-4 w-4 shrink-0" />
                 <span className="truncate">{copied ? "Copied!" : "Copy Email"}</span>

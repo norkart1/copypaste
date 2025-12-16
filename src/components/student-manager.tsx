@@ -298,12 +298,12 @@ export const StudentManager = React.memo(function StudentManager({
   };
 
   return (
-    <div className="space-y-6 rounded-3xl border border-white/10 bg-slate-900/60 p-6 shadow-[0_20px_60px_rgba(8,47,73,0.35)]">
+    <div className="space-y-6 rounded-3xl bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-widest text-white/50">Students roster</p>
-          <h2 className="text-2xl font-semibold text-white">Manage participants</h2>
-          <p className="text-sm text-white/60">Search, filter, edit, or bulk-delete student entries.</p>
+          <p className="text-xs uppercase tracking-widest text-gray-400">Students roster</p>
+          <h2 className="text-2xl font-semibold text-gray-900">Manage participants</h2>
+          <p className="text-sm text-gray-500">Search, filter, edit, or bulk-delete student entries.</p>
         </div>
         <div className="flex gap-2">
           <div className="relative">
@@ -323,19 +323,19 @@ export const StudentManager = React.memo(function StudentManager({
                   onClick={() => setShowExportMenu(false)}
                 />
                 <div className="absolute right-0 top-full mt-2 z-50">
-                  <div className="rounded-2xl border border-white/10 bg-slate-900/95 backdrop-blur-xl shadow-2xl p-2 min-w-[180px]">
+                  <div className="rounded-2xl bg-white shadow-2xl p-2 min-w-[180px] border border-gray-200">
                     <button
                       type="button"
                       onClick={() => {
                         exportToCSV();
                         setShowExportMenu(false);
                       }}
-                      className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm text-white transition hover:bg-white/10"
+                      className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm text-gray-900 transition hover:bg-gray-100"
                     >
-                      <FileSpreadsheet className="h-4 w-4 text-emerald-400" />
+                      <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
                       <div>
                         <p className="font-semibold">Export as CSV</p>
-                        <p className="text-xs text-white/60">Spreadsheet format</p>
+                        <p className="text-xs text-gray-500">Spreadsheet format</p>
                       </div>
                     </button>
                     <button
@@ -344,12 +344,12 @@ export const StudentManager = React.memo(function StudentManager({
                         await exportToPDF();
                         setShowExportMenu(false);
                       }}
-                      className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm text-white transition hover:bg-white/10"
+                      className="w-full flex items-center gap-3 rounded-xl px-4 py-2.5 text-left text-sm text-gray-900 transition hover:bg-gray-100"
                     >
-                      <FileText className="h-4 w-4 text-red-400" />
+                      <FileText className="h-4 w-4 text-red-500" />
                       <div>
                         <p className="font-semibold">Export as PDF</p>
-                        <p className="text-xs text-white/60">Document format</p>
+                        <p className="text-xs text-gray-500">Document format</p>
                       </div>
                     </button>
                   </div>
@@ -371,12 +371,12 @@ export const StudentManager = React.memo(function StudentManager({
       </div>
 
       <div className="relative z-20 grid gap-3 md:grid-cols-5">
-        <div className="relative z-20 md:col-span-2 flex items-center rounded-2xl border border-white/10 bg-white/5 px-4 transition-all duration-200 hover:border-white/20 focus-within:border-fuchsia-400/50 focus-within:ring-2 focus-within:ring-fuchsia-400/30 focus-within:bg-white/10">
-          <Search className="mr-2 h-4 w-4 text-white/50 flex-shrink-0" />
+        <div className="relative z-20 md:col-span-2 flex items-center rounded-2xl border border-gray-200 bg-gray-50 px-4 transition-all duration-200 hover:border-gray-300 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-400/30 focus-within:bg-white">
+          <Search className="mr-2 h-4 w-4 text-gray-400 flex-shrink-0" />
           <Input
             type="text"
             placeholder="Search by name or chest number"
-            className="border-none bg-transparent px-0 placeholder:text-white/40"
+            className="border-none bg-transparent px-0 placeholder:text-gray-400"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
           />
@@ -407,7 +407,7 @@ export const StudentManager = React.memo(function StudentManager({
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-xs uppercase tracking-widest text-white/50">Quick sort</span>
+        <span className="text-xs uppercase tracking-widest text-gray-400">Quick sort</span>
         <div className="flex flex-wrap gap-2">
           {[
             { label: "Latest", value: "latest" },
@@ -420,22 +420,22 @@ export const StudentManager = React.memo(function StudentManager({
               onClick={() => setSort(option.value as SortOption)}
               className={`rounded-full px-4 py-1 text-xs font-semibold transition ${
                 sort === option.value
-                  ? "bg-emerald-500/20 text-emerald-300"
-                  : "border border-white/10 text-white/60 hover:text-white"
+                  ? "bg-emerald-100 text-emerald-700"
+                  : "border border-gray-200 text-gray-500 hover:text-gray-900"
               }`}
             >
               {option.label}
             </button>
           ))}
         </div>
-        <div className="ml-auto flex items-center gap-2 text-sm text-white/60">
-          <CheckCircle2 className="h-4 w-4 text-emerald-300" />
+        <div className="ml-auto flex items-center gap-2 text-sm text-gray-500">
+          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
           {sortedStudents.length} students
         </div>
       </div>
 
       <div className="space-y-3">
-        <div className="flex flex-wrap items-center gap-4 text-xs uppercase tracking-widest text-white/50">
+        <div className="flex flex-wrap items-center gap-4 text-xs uppercase tracking-widest text-gray-400">
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -456,7 +456,7 @@ export const StudentManager = React.memo(function StudentManager({
           return (
             <div
               key={student.id}
-              className="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-900/70 via-slate-900/40 to-slate-800/40 px-4 py-4 shadow-[0_15px_60px_rgba(15,23,42,0.45)] transition hover:border-fuchsia-400/40"
+              className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-4 shadow-sm transition hover:border-emerald-400"
             >
               <div className="flex flex-col gap-4 xl:flex-row xl:items-center">
                 <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -466,15 +466,15 @@ export const StudentManager = React.memo(function StudentManager({
                     onChange={() => toggleSelectOne(student.id)}
                   />
                   <div>
-                    <p className="text-sm text-white/40">#{student.id.slice(0, 8)}</p>
-                    <p className="text-lg font-semibold text-white">{student.name}</p>
+                    <p className="text-sm text-gray-400">#{student.id.slice(0, 8)}</p>
+                    <p className="text-lg font-semibold text-gray-900">{student.name}</p>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-wide text-white/60 w-full xl:flex-1">
-                  <span className="rounded-full border border-white/15 px-3 py-1">
+                <div className="flex flex-wrap gap-3 text-xs font-semibold uppercase tracking-wide text-gray-500 w-full xl:flex-1">
+                  <span className="rounded-full border border-gray-300 px-3 py-1">
                     {teamMap.get(student.team_id) ?? "Unknown team"}
                   </span>
-                  <span className="rounded-full border border-white/15 px-3 py-1">Chest #{student.chest_no}</span>
+                  <span className="rounded-full border border-gray-300 px-3 py-1">Chest #{student.chest_no}</span>
                 </div>
                 <div className="flex flex-wrap gap-2 w-full xl:ml-auto xl:w-auto xl:justify-end">
                   <Button
@@ -491,7 +491,7 @@ export const StudentManager = React.memo(function StudentManager({
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="gap-2 border border-white/15 bg-white/5"
+                    className="gap-2 border border-gray-200 bg-white"
                     onClick={() => setEditingId((prev) => (prev === student.id ? null : student.id))}
                   >
                     <Pencil className="h-4 w-4" />
@@ -517,12 +517,12 @@ export const StudentManager = React.memo(function StudentManager({
               {isEditing && (
                 <form
                   action={updateAction}
-                  className="mt-4 grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white md:grid-cols-3"
+                  className="mt-4 grid gap-3 rounded-2xl border border-gray-200 bg-white p-4 text-sm text-gray-900 md:grid-cols-3"
                 >
                   <input type="hidden" name="id" value={student.id} />
                   <Input name="name" defaultValue={student.name} placeholder="Student name" />
                   <input type="hidden" name="chest_no" value={student.chest_no} />
-                  <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70">
+                  <div className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-600">
                     Chest: {student.chest_no}
                   </div>
                   <SearchSelect
@@ -550,39 +550,39 @@ export const StudentManager = React.memo(function StudentManager({
           );
         })}
         {visibleStudents.length === 0 && (
-          <p className="rounded-2xl border border-dashed border-white/10 px-4 py-10 text-center text-sm text-white/60">
+          <p className="rounded-2xl border border-dashed border-gray-200 px-4 py-10 text-center text-sm text-gray-500">
             No students match your filters.
           </p>
         )}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/70">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
         <p>
           Showing{" "}
-          <span className="font-semibold text-white">
+          <span className="font-semibold text-gray-900">
             {sortedStudents.length === 0 ? 0 : `${showingFrom}-${showingTo}`}
           </span>{" "}
-          of <span className="font-semibold text-white">{sortedStudents.length}</span>
+          of <span className="font-semibold text-gray-900">{sortedStudents.length}</span>
         </p>
         <div className="flex items-center gap-2">
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            className="border border-white/10 bg-white/5"
+            className="border border-gray-200 bg-white"
             onClick={() => setPage((prev) => Math.max(1, prev - 1))}
             disabled={page === 1}
           >
             Prev
           </Button>
-          <div className="rounded-xl border border-white/10 px-4 py-1 text-xs uppercase tracking-widest text-white/80">
+          <div className="rounded-xl border border-gray-200 px-4 py-1 text-xs uppercase tracking-widest text-gray-700">
             Page {page} of {totalPages}
           </div>
           <Button
             type="button"
             variant="ghost"
             size="sm"
-            className="border border-white/10 bg-white/5"
+            className="border border-gray-200 bg-white"
             onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
             disabled={page === totalPages || sortedStudents.length === 0}
           >

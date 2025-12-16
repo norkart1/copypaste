@@ -136,7 +136,7 @@ export function SearchSelect({
     <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/40"
         onClick={() => {
           setOpen(false);
           setQuery("");
@@ -144,17 +144,17 @@ export function SearchSelect({
       />
       
       {/* Popup Content */}
-      <div className="relative z-[100000] w-full max-w-md rounded-3xl border border-white/10 bg-slate-900/95 p-6 shadow-2xl backdrop-blur-2xl">
+      <div className="relative z-[100000] w-full max-w-md rounded-3xl bg-white p-6 shadow-2xl">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-white">Search and Select</h3>
+          <h3 className="text-lg font-semibold text-gray-900">Search and Select</h3>
           <button
             type="button"
             onClick={() => {
               setOpen(false);
               setQuery("");
             }}
-            className="rounded-full border border-white/10 p-1.5 text-white/70 transition hover:bg-white/10 hover:text-white"
+            className="rounded-full border border-gray-200 p-1.5 text-gray-500 transition hover:bg-gray-100"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
@@ -162,15 +162,15 @@ export function SearchSelect({
         </div>
 
         {/* Search Input */}
-        <div className="mb-4 flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3">
-          <Search className="h-4 w-4 text-white/40 flex-shrink-0" />
+        <div className="mb-4 flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3">
+          <Search className="h-4 w-4 text-gray-400 flex-shrink-0" />
           <input
             ref={searchInputRef}
             type="text"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Type to search..."
-            className="flex-1 bg-transparent py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none"
+            className="flex-1 bg-transparent py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
           />
         </div>
 
@@ -183,30 +183,30 @@ export function SearchSelect({
                   type="button"
                   key={option.value}
                   className={cn(
-                    "w-full rounded-xl px-4 py-3 text-left transition hover:bg-white/10",
+                    "w-full rounded-xl px-4 py-3 text-left transition hover:bg-gray-100",
                     option.value === selectedValue
-                      ? "bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30"
-                      : "text-white",
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      : "text-gray-900",
                   )}
                   onClick={() => handleSelect(option.value)}
                 >
                   <p className="font-semibold">{option.label}</p>
                   {option.meta && (
-                    <p className="mt-0.5 text-xs text-white/60">{option.meta}</p>
+                    <p className="mt-0.5 text-xs text-gray-500">{option.meta}</p>
                   )}
                 </button>
               ))}
             </div>
           ) : (
             <div className="py-8 text-center">
-              <p className="text-sm text-white/60">{emptyMessage}</p>
+              <p className="text-sm text-gray-500">{emptyMessage}</p>
             </div>
           )}
         </div>
 
         {/* Footer Info */}
         {filteredOptions.length > 0 && (
-          <div className="mt-4 text-center text-xs text-white/50">
+          <div className="mt-4 text-center text-xs text-gray-400">
             {filteredOptions.length} {filteredOptions.length === 1 ? "option" : "options"} found
           </div>
         )}
@@ -226,14 +226,14 @@ export function SearchSelect({
         <button
           type="button"
           className={cn(
-            "flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-left text-sm text-white transition hover:border-fuchsia-400 focus:border-fuchsia-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-400/40",
+            "flex w-full items-center justify-between rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2 text-left text-sm text-gray-900 transition hover:border-emerald-400 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/40",
             disabled && "cursor-not-allowed opacity-60",
-            open && "border-fuchsia-400 ring-2 ring-fuchsia-400/40",
+            open && "border-emerald-400 ring-2 ring-emerald-400/40",
           )}
           onClick={() => !disabled && setOpen((prev) => !prev)}
           disabled={disabled}
         >
-          <span className={cn(!selectedOption && "text-white/50")}>
+          <span className={cn(!selectedOption && "text-gray-400")}>
             {displayLabel}
           </span>
           <svg

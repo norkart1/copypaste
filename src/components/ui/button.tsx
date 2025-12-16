@@ -8,24 +8,24 @@ import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fuchsia-400/40 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default:
-          "bg-gradient-to-r from-fuchsia-500 via-rose-500 to-orange-400 text-white shadow-lg shadow-rose-500/30 hover:scale-[1.01]",
+          "bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 text-white shadow-lg shadow-rose-500/30 hover:scale-[1.01]",
         primary:
-          "bg-gradient-to-r from-fuchsia-500 via-rose-500 to-orange-400 text-white shadow-lg shadow-rose-500/30 hover:scale-[1.01]",
+          "bg-gradient-to-r from-orange-400 via-rose-500 to-pink-500 text-white shadow-lg shadow-rose-500/30 hover:scale-[1.01]",
         secondary:
-          "bg-white/10 text-white border border-white/20 backdrop-blur hover:bg-white/20",
+          "bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200",
         ghost:
-          "text-white border border-transparent hover:border-white/30 hover:bg-white/5",
+          "text-gray-700 border border-transparent hover:border-gray-200 hover:bg-gray-100",
         outline:
-          "border border-white/30 bg-transparent text-white hover:bg-white/10",
+          "border border-gray-300 bg-transparent text-gray-700 hover:bg-gray-50",
         destructive:
           "bg-red-600 text-white hover:bg-red-600/90 focus-visible:ring-red-400/40",
         danger: "bg-red-500/90 text-white hover:bg-red-500",
-        link: "text-fuchsia-300 underline-offset-4 hover:underline",
+        link: "text-emerald-600 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-4 py-2",

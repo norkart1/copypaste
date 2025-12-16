@@ -75,13 +75,13 @@ export function JuryCardWrapper({
         <form id="edit-jury-form" action={updateAction} className="space-y-4">
           <input type="hidden" name="id" value={jury.id} />
           <div>
-            <label className="block text-sm font-medium text-white/70 mb-2">
+            <label className="block text-sm font-medium text-gray-600 mb-2">
               Full Name
             </label>
             <Input name="name" defaultValue={jury.name} required />
           </div>
           <div>
-            <label className="block text-sm font-medium text-white/70 mb-2">
+            <label className="block text-sm font-medium text-gray-600 mb-2">
               Password
             </label>
             <Input name="password" type="password" defaultValue={jury.password} required minLength={4} />
@@ -113,11 +113,11 @@ export function JuryCardWrapper({
           </>
         }
       >
-        <p className="text-white/80">
+        <p className="text-gray-700">
           Are you sure you want to delete <strong>{jury.name}</strong>? This action cannot be undone.
         </p>
         {assignmentCount > 0 && (
-          <p className="mt-2 text-sm text-amber-300">
+          <p className="mt-2 text-sm text-amber-600">
             Warning: This jury member has {assignmentCount} assigned program{assignmentCount !== 1 ? "s" : ""}.
           </p>
         )}
