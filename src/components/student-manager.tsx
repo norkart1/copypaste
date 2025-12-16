@@ -602,15 +602,15 @@ export const StudentManager = React.memo(function StudentManager({
         }
       >
         {viewStudent && (
-          <div className="space-y-3 text-sm text-white/80">
+          <div className="space-y-3 text-sm text-gray-700">
             <p>
-              <span className="text-white/50">Student ID:</span> {viewStudent.id}
+              <span className="text-gray-400">Student ID:</span> {viewStudent.id}
             </p>
             <p>
-              <span className="text-white/50">Team:</span> {teamMap.get(viewStudent.team_id) ?? "Unknown"}
+              <span className="text-gray-400">Team:</span> {teamMap.get(viewStudent.team_id) ?? "Unknown"}
             </p>
             <p>
-              <span className="text-white/50">Chest number:</span> {viewStudent.chest_no}
+              <span className="text-gray-400">Chest number:</span> {viewStudent.chest_no}
             </p>
           </div>
         )}
@@ -626,7 +626,7 @@ export const StudentManager = React.memo(function StudentManager({
           </Button>
         }
       >
-        <p className="text-sm text-white/70">
+        <p className="text-sm text-gray-600">
           You are deleting {selected.size} student{selected.size === 1 ? "" : "s"}. This cannot be undone.
         </p>
         <div className="space-y-4">
